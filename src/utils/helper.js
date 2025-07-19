@@ -7,6 +7,7 @@ export const endpoints = {
   info: "/api/users/my-info",
   refresh: "/auth/refresh",
   enable2fa: "/auth/2fa/setup",
+  verifyCode: "/auth/2fa/verify-code",
 }
 
 const cookies = new Cookies();
