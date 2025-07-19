@@ -1,10 +1,7 @@
 import React, { useState } from 'react';
 import { Eye, EyeOff, QrCode } from 'lucide-react';
-// import { loginApi } from '../../services/userService';
 import { Link, useNavigate } from 'react-router-dom';
-// import useLogin from '../../hooks/useLogin';
-import { useAuth } from '../../hooks/useAuth';
-import { useAuthContext } from '../../contexts/AuthContext';
+import useLogin from '../../hooks/useLogin';
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -13,22 +10,14 @@ const Login = () => {
   const [rememberMe, setRememberMe] = useState(false);
   const navigate = useNavigate()
 
-  // const { isLoading, login } = useLogin()
-  const { login, loading, error, isAuthenticated } = useAuthContext();
+  const { isLoading, login } = useLogin()
+  // const { login, loading, error, isAuthenticated } = useAuthContext();
 
   const handleSubmit = () => {
-    console.log('Login attempted with:', { email, password, rememberMe });
     login({ email, password })
     navigate("/");
 
-  };
-
-  const handleLogout = () => {
-    console.log('Login attempted with:', { email, password, rememberMe });
-    logo
-    navigate("/");
-
-  };
+  }
 
   return (
     <div className="flex items-center justify-center">

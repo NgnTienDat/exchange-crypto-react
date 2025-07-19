@@ -4,8 +4,10 @@ import { loginApi } from "../services/userService";
 import { setCookieToken } from "../utils/helper";
 
 function useLogin() {
-  const navigate = useNavigate();
-  const queryClient = useQueryClient();
+  
+  const navigate = useNavigate()
+  const queryClient = useQueryClient()
+
   const { isLoading, mutate: login } = useMutation({
     mutationFn: ({ email, password }) =>
       loginApi({ email, password }),

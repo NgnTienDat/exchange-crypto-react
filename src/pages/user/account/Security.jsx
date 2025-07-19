@@ -2,9 +2,11 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { useAuthContext } from '../../../contexts/AuthContext'
 import { Check, X } from 'lucide-react'
+import useUser from '../../../hooks/useUser'
 
 const Security = () => {
-  const {user} = useAuthContext()
+  // const {user} = useAuthContext()
+  const {user} = useUser()
   
   return (
     <div className='p-5'>
