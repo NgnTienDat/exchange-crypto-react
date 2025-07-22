@@ -8,9 +8,10 @@ export async function loginApi({ email, password }) {
     email: email,
     password: password,
   });
-  if (res.status !== 200) throw new Error(res.data.message);
+
+  if (res.status !== 200) throw new Error(res.response.data);
   const data = res.data.result;
-  console.log("Token: ", data)
+  // console.log("Token: ", data)
 
   return data;
 }
