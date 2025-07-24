@@ -2,51 +2,8 @@
         {
             "channel": "ticker",
             "client_id": "",
-            "timestamp": "2025-07-21T02:21:55.280813307Z",
-            "sequence_num": 0,
-            "events": [
-                {
-                    "type": "snapshot",
-                    "tickers": [
-                        {
-                            "type": "ticker",
-                            "product_id": "BTC-USD",
-                            "price": "117798",
-                            "volume_24_h": "2767.3439664",
-                            "low_24_h": "116525",
-                            "high_24_h": "118921.76",
-                            "low_52_w": "49050.01",
-                            "high_52_w": "123231.07",
-                            "price_percent_chg_24_h": "-0.14151662349847",
-                            "best_bid": "117810.49",
-                            "best_ask": "117810.5",
-                            "best_bid_quantity": "0.2096332",
-                            "best_ask_quantity": "0.08367218"
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "channel": "subscriptions",
-            "client_id": "",
-            "timestamp": "2025-07-21T02:21:55.28083327Z",
-            "sequence_num": 1,
-            "events": [
-                {
-                    "subscriptions": {
-                        "ticker": [
-                            "BTC-USD"
-                        ]
-                    }
-                }
-            ]
-        },
-        {
-            "channel": "ticker",
-            "client_id": "",
-            "timestamp": "2025-07-21T02:21:55.435390567Z",
-            "sequence_num": 2,
+            "timestamp": "2025-07-23T08:54:23.482157316Z",
+            "sequence_num": 21,
             "events": [
                 {
                     "type": "update",
@@ -54,54 +11,26 @@
                         {
                             "type": "ticker",
                             "product_id": "BTC-USD",
-                            "price": "117798",
-                            "volume_24_h": "2767.3439664",
-                            "low_24_h": "116525",
-                            "high_24_h": "118921.76",
+                            "price": "118402.81",
+                            "volume_24_h": "6576.90153315",
+                            "low_24_h": "116600",
+                            "high_24_h": "120300",
                             "low_52_w": "49050.01",
                             "high_52_w": "123231.07",
-                            "price_percent_chg_24_h": "-0.14151662349847",
-                            "best_bid": "117810.49",
-                            "best_ask": "117810.5",
-                            "best_bid_quantity": "0.03929691",
-                            "best_ask_quantity": "0.08367218"
+                            "price_percent_chg_24_h": "0.04731010093892",
+                            "best_bid": "118402.81",
+                            "best_ask": "118402.82",
+                            "best_bid_quantity": "0.01583984",
+                            "best_ask_quantity": "0.0000122"
                         }
                     ]
                 }
             ]
         },
         {
-            "channel": "ticker",
+            "channel": "ticker_batch",
             "client_id": "",
-            "timestamp": "2025-07-21T02:21:55.685462295Z",
-            "sequence_num": 3,
-            "events": [
-                {
-                    "type": "update",
-                    "tickers": [
-                        {
-                            "type": "ticker",
-                            "product_id": "BTC-USD",
-                            "price": "117810.5",
-                            "volume_24_h": "2767.3439664",
-                            "low_24_h": "116525",
-                            "high_24_h": "118921.76",
-                            "low_52_w": "49050.01",
-                            "high_52_w": "123231.07",
-                            "price_percent_chg_24_h": "-0.13092025478078",
-                            "best_bid": "117810.49",
-                            "best_ask": "117810.5",
-                            "best_bid_quantity": "0.03929691",
-                            "best_ask_quantity": "0.08367218"
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "channel": "ticker",
-            "client_id": "",
-            "timestamp": "2025-07-21T02:21:55.688602632Z",
+            "timestamp": "2025-07-23T08:55:49.532429713Z",
             "sequence_num": 4,
             "events": [
                 {
@@ -110,106 +39,16 @@
                         {
                             "type": "ticker",
                             "product_id": "BTC-USD",
-                            "price": "117810.5",
-                            "volume_24_h": "2767.3439664",
-                            "low_24_h": "116525",
-                            "high_24_h": "118921.76",
+                            "price": "118407.48",
+                            "volume_24_h": "6569.67557878",
+                            "low_24_h": "116600",
+                            "high_24_h": "120300",
                             "low_52_w": "49050.01",
                             "high_52_w": "123231.07",
-                            "price_percent_chg_24_h": "-0.13092025478078",
-                            "best_bid": "117810.49",
-                            "best_ask": "117810.5",
-                            "best_bid_quantity": "0.03929691",
-                            "best_ask_quantity": "0.08246622"
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "channel": "ticker",
-            "client_id": "",
-            "timestamp": "2025-07-21T02:21:55.939868765Z",
-            "sequence_num": 5,
-            "events": [
-                {
-                    "type": "update",
-                    "tickers": [
-                        {
-                            "type": "ticker",
-                            "product_id": "BTC-USD",
-                            "price": "117810.5",
-                            "volume_24_h": "2767.3439664",
-                            "low_24_h": "116525",
-                            "high_24_h": "118921.76",
-                            "low_52_w": "49050.01",
-                            "high_52_w": "123231.07",
-                            "price_percent_chg_24_h": "-0.13092025478078",
-                            "best_bid": "117810.49",
-                            "best_ask": "117810.5",
-                            "best_bid_quantity": "0.03930591",
-                            "best_ask_quantity": "0.08246603"
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "channel": "ticker",
-            "client_id": "",
-            "timestamp": "2025-07-21T02:21:56.436527999Z",
-            "sequence_num": 6,
-            "events": [
-                {
-                    "type": "update",
-                    "tickers": [
-                        {
-                            "type": "ticker",
-                            "product_id": "BTC-USD",
-                            "price": "117810.5",
-                            "volume_24_h": "2767.3439664",
-                            "low_24_h": "116525",
-                            "high_24_h": "118921.76",
-                            "low_52_w": "49050.01",
-                            "high_52_w": "123231.07",
-                            "price_percent_chg_24_h": "-0.13092025478078",
-                            "best_bid": "117810.49",
-                            "best_ask": "117810.5",
-                            "best_bid_quantity": "0.04228177",
-                            "best_ask_quantity": "0.08242401"
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "channel": "ticker",
-            "client_id": "",
-            "timestamp": "2025-07-21T02:21:56.972310516Z",
-            "sequence_num": 7,
-            "events": [
-                {
-                    "type": "update",
-                    "tickers": [
-                        {
-                            "type": "ticker",
-                            "product_id": "BTC-USD",
-                            "price": "117810.5",
-                            "volume_24_h": "2767.3439664",
-                            "low_24_h": "116525",
-                            "high_24_h": "118921.76",
-                            "low_52_w": "49050.01",
-                            "high_52_w": "123231.07",
-                            "price_percent_chg_24_h": "-0.13092025478078",
-                            "best_bid": "117810.49",
-                            "best_ask": "117810.5",
-                            "best_bid_quantity": "0.04228177",
-                            "best_ask_quantity": "0.08240427"
+                            "price_percent_chg_24_h": "0.04831419945704"
                         }
                     ]
                 }
             ]
         }
     ]
-
-    

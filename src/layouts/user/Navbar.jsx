@@ -21,7 +21,7 @@ export default function Navbar() {
           <div className="bg-yellow-400 text-black px-2 py-1 rounded text-sm font-bold mr-2">C</div>
           <span className="text-yellow-400 text-2xl font-bold">CryptoCoin</span>
         </Link>
-        <Link to="/buy-crypto" className="hover:text-yellow-500">Buy Crypto</Link>
+        <Link to="/crypto/buy" className="hover:text-yellow-500">Buy Crypto</Link>
         <Link to="/market" className="hover:text-yellow-500">Market</Link>
         <Link to="/trade" className="hover:text-yellow-500">Trade</Link>
       </div>

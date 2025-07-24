@@ -7,8 +7,10 @@ const Market = () => {
 
   const tokenList = [
     { id: 'BTC-USD', name: 'Bitcoin', symbol: 'BTC' },
-    // { id: 'ETH-USD', name: 'Ethereum', symbol: 'ETH' },
-    // { id: 'DOGE-USD', name: 'Dogecoin', symbol: 'DOGE' }
+    { id: 'ETH-USD', name: 'Ethereum', symbol: 'ETH' },
+    { id: 'DOGE-USD', name: 'Dogecoin', symbol: 'DOGE' },
+    { id: 'XRP-USD', name: 'XRPcoin', symbol: 'XRP' },
+    { id: 'USDT-USD', name: 'Tether', symbol: 'USDT' }
     // thêm các mã token khác tùy backend của bạn
   ];
 
@@ -48,7 +50,9 @@ const Market = () => {
           {/* Token Rows */}
           {filtered.length > 0 ? (
             filtered.map((token) => (
-              <TokenRow key={token.id} productId={token.id} />
+              <a href='#'>
+                <TokenRow key={token.id} productId={token.id} />
+              </a>
             ))
           ) : (
             <div className="px-6 py-8 text-center">

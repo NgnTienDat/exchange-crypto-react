@@ -13,9 +13,9 @@ export const SocketProvider = ({ children }) => {
         const client = new Client({
             webSocketFactory: () => new SockJS(`${BASE_URL}/ws/crypto-coin`),
             // reconnectDelay: 5000,    
-            debug: (str) => console.log(str),
+            // debug: (str) => console.log(str),
             onConnect: (frame) => {
-                console.log("✅ Connected to WebSocket server");
+                console.log("Connected to WebSocket server");
                 console.log("Headers:", frame.headers);
                 setConnected(true);
                 setStompClient(client);
