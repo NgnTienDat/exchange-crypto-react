@@ -2,9 +2,10 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { loginApi } from "../services/userService";
 import { setCookieToken } from "../utils/helper";
+import toast from "react-hot-toast";
 
 function useLogin() {
-  
+
   const navigate = useNavigate()
   const queryClient = useQueryClient()
 
@@ -20,9 +21,13 @@ function useLogin() {
       navigate("/");
     },
     onError: (err) => {
-      console.log(err);
-    //   toast.error(err.response.data.message);
-    },
+      console.log("error useLogin: ", err?.response?.data?.message);
+
+      const errorMessage = err?.response?.data?.message || "Login failed";
+      navigate("/auth/login");
+      toast.error(errorMessage);
+    }
+
   });
   return { isLoading, login };
 }

@@ -1,0 +1,54 @@
+    [
+        {
+            "channel": "ticker",
+            "client_id": "",
+            "timestamp": "2025-07-23T08:54:23.482157316Z",
+            "sequence_num": 21,
+            "events": [
+                {
+                    "type": "update",
+                    "tickers": [
+                        {
+                            "type": "ticker",
+                            "product_id": "BTC-USD",
+                            "price": "118402.81",
+                            "volume_24_h": "6576.90153315",
+                            "low_24_h": "116600",
+                            "high_24_h": "120300",
+                            "low_52_w": "49050.01",
+                            "high_52_w": "123231.07",
+                            "price_percent_chg_24_h": "0.04731010093892",
+                            "best_bid": "118402.81",
+                            "best_ask": "118402.82",
+                            "best_bid_quantity": "0.01583984",
+                            "best_ask_quantity": "0.0000122"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "channel": "ticker_batch",
+            "client_id": "",
+            "timestamp": "2025-07-23T08:55:49.532429713Z",
+            "sequence_num": 4,
+            "events": [
+                {
+                    "type": "update",
+                    "tickers": [
+                        {
+                            "type": "ticker",
+                            "product_id": "BTC-USD",
+                            "price": "118407.48",
+                            "volume_24_h": "6569.67557878",
+                            "low_24_h": "116600",
+                            "high_24_h": "120300",
+                            "low_52_w": "49050.01",
+                            "high_52_w": "123231.07",
+                            "price_percent_chg_24_h": "0.04831419945704"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]

@@ -18,6 +18,8 @@ import Body from './layouts/user/Body'
 import { AuthProvider } from './contexts/AuthContext'
 import TwoFactorAuthenticate from './pages/user/account/TwoFactorAuthenticate'
 import { Toaster } from 'react-hot-toast'
+import { SocketProvider } from './hooks/useSocket'
+import BuyCrypto from './pages/user/BuyCrypto'
 
 function App() {
 
@@ -35,10 +37,15 @@ function App() {
               <Route path="register" element={<Register />} />
             </Route>
 
-            <Route path="/" element={<Body />}>
+            <Route path="/" element={
+              <SocketProvider>
+                <Body />
+              </SocketProvider>
+            }>
               <Route index element={<Home />} />
+              <Route path="crypto/buy" element={<BuyCrypto />} />
               <Route path="market" element={<Market />} />
-              <Route path="trade" element={<Trade />} />
+              <Route path="trade/:productId" element={<Trade />} />
               <Route path="my/security/2fa" element={<PrivateRoute><TwoFactorAuthenticate /></PrivateRoute>} />
 
               <Route path="my" element={
