@@ -1,10 +1,13 @@
+import { memo } from "react";
 import useMarketData from "../../hooks/useMarketData";
+import { useSelector } from "react-redux";
 
 
 const TokenRow = ({ productId }) => {
-    // console.log(productId)
-    const data = useMarketData(productId);
-    console.log("data row: ", data)
+    const data = useMarketData(productId)
+
+    // const data = useMarketData(productId);
+    // console.log("data row: ", data)
 
 
     if (!data) return null;

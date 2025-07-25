@@ -1,14 +1,6 @@
-import { useState, useCallback } from "react";
-import useSubscribeMarket from "./useSubscribeMarket";
+import { useSelector } from "react-redux";
+
 
 export default function useMarketData(productId) {
-  const [data, setData] = useState(null)
-
-  const handleMessage = useCallback((msg) => {
-    setData(msg);
-  }, []);
-
-  useSubscribeMarket(productId, handleMessage);
-
-  return data;
+  return useSelector(state => state.marketData[productId]);
 }

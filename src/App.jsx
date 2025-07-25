@@ -20,6 +20,7 @@ import TwoFactorAuthenticate from './pages/user/account/TwoFactorAuthenticate'
 import { Toaster } from 'react-hot-toast'
 import { SocketProvider } from './hooks/useSocket'
 import BuyCrypto from './pages/user/BuyCrypto'
+import MarketDataProvider from './contexts/MarketDataProvider'
 
 function App() {
 
@@ -39,6 +40,7 @@ function App() {
 
             <Route path="/" element={
               <SocketProvider>
+                <MarketDataProvider />
                 <Body />
               </SocketProvider>
             }>
