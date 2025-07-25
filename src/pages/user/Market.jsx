@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import TokenRow from '../../components/user/TokenRow';
 
 const Market = () => {
+  console.log("Market render");
+
   const [searchTerm, setSearchTerm] = useState('');
 
   const tokenList = [
@@ -50,9 +52,9 @@ const Market = () => {
           {/* Token Rows */}
           {filtered.length > 0 ? (
             filtered.map((token) => (
-              <a href='#'>
+              // <a >
                 <TokenRow key={token.id} productId={token.id} />
-              </a>
+              // </a>
             ))
           ) : (
             <div className="px-6 py-8 text-center">
