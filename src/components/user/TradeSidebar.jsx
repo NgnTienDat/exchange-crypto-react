@@ -4,7 +4,7 @@ import { Star } from 'lucide-react';
 
 const TradeSidebar = ({ recentTrades, tradingPairs }) => {
   return (
-    <div className="w-1/5 bg-gray-800 border-l border-gray-700">
+    <div className="bg-gray-800 border-l border-gray-700">
       <div className="p-4">
         {/* Trading Pairs */}
         <div className="mb-6">
@@ -37,12 +37,12 @@ const TradeSidebar = ({ recentTrades, tradingPairs }) => {
             <span className="text-sm text-gray-400">FAQ</span>
           </div>
 
-          <div className="flex space-x-2 mb-4 text-sm">
+          {/* <div className="flex space-x-2 mb-4 text-sm">
             <button className="px-3 py-1 bg-gray-700 rounded">All</button>
             <button className="px-3 py-1 bg-gray-700 rounded">Change</button>
             <button className="px-3 py-1 bg-gray-700 rounded">New High/Low</button>
             <button className="px-3 py-1 bg-gray-700 rounded">Fluctuation</button>
-          </div>
+          </div> */}
 
           <div className="space-y-2 text-sm">
             {tradingPairs.map((pair, index) => (

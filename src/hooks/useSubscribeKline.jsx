@@ -1,24 +1,16 @@
 import { useEffect } from "react";
 import useSocket from "./useSocket";
-import { useDispatch } from "react-redux";
 
 
-/// No need to use this hook!!! 
-
-
-export default function useSubscribeMarket(productId, onMessage) {
+export default function useSubscribeKline(productId, onMessage) {
   const { stompClient, connected } = useSocket()
-  const dispatch = useDispatch();
   useEffect(() => {
     if (!stompClient || !connected || !productId) return;
 
-    const sub = stompClient.subscribe(`/topic/market/${productId}`, (msg) => {
+    const sub = stompClient.subscribe(`/topic/kline/${productId}`, (msg) => {
       const data = JSON.parse(msg.body)
+      // console.log("data: ", data)
       onMessage(data)
-      dispatch(updateMarketData({
-        productId: data.productId,
-        data,
-      }));
     })
 
     return () => {

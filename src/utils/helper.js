@@ -8,7 +8,10 @@ export const endpoints = {
   refresh: "/auth/refresh",
   enable2fa: "/auth/2fa/setup",
   verifyCode: "/auth/2fa/verify-code",
+  productDetail: (productId) => `/api/trade/${productId}`,
 }
+
+export const PRODUCT_IDS = ['BTCUSDT', 'ETHUSDT', 'ADAUSDT', 'DOTUSDT', 'BNBUSDT', 'SOLUSDT']
 
 const cookies = new Cookies();
 const AUTH_TOKEN_KEY = 'auth_token';

@@ -1,10 +1,15 @@
 // components/user/TradeHeader.jsx
 import React from 'react';
 import { Star, Search } from 'lucide-react';
+import useMarketData from '../../hooks/useMarketData';
 
-const TradeHeader = ({ currentPrice, priceChange }) => {
+const TradeHeader = ({ productId }) => {
+
+  const data = useMarketData(productId);
+  if (!data) return null;
+  const { price } = data;
   return (
-    <div className="bg-gray-800 border-b border-gray-700 p-4">
+    <div className="bg-neutral-800 rounded p-4">
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-6">
           <div className="flex items-center space-x-2">
@@ -13,12 +18,12 @@ const TradeHeader = ({ currentPrice, priceChange }) => {
               B
             </div>
             <div>
-              <div className="flex items-center space-x-2">
-                <span className="text-xl font-bold">BTC/USDT</span>
-                <span className="text-2xl font-bold">{currentPrice.toLocaleString()}</span>
+              <div className="flex items-center space-x-7">
+                <span className="text-2xl font-bold">BTC/USDT</span>
+                <span className="text-2xl font-bold">{price.toLocaleString()}</span>
               </div>
-              <div className="flex items-center space-x-4 text-sm text-gray-400">
-                <span>24h Chg: <span className="text-red-400">{priceChange} ({((priceChange / currentPrice) * 100).toFixed(2)}%)</span></span>
+              <div className="flex items-center space-x-5 text-sm text-gray-400">
+                {/* <span>24h Chg: <span className="text-red-400">{priceChange} ({((priceChange / currentPrice) * 100).toFixed(2)}%)</span></span> */}
                 <span>24h High: 119,273.36</span>
                 <span>24h Low: 117,103.10</span>
                 <span>24h Volume(BTC): 17,025.13</span>
