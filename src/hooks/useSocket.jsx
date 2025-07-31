@@ -29,6 +29,7 @@ export const SocketProvider = ({ children }) => {
             client.deactivate()
         };
     }, []);
+   
 
     return (
         <SocketContext.Provider value={{ stompClient, connected }}>

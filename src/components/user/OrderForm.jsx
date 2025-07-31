@@ -22,7 +22,7 @@ const OrderForm = ({
   };
 
   return (
-    <div className="bg-gray-800 border-t border-gray-700 p-4">
+    <div className="bg-neutral-800 rounded p-4">
       <div className="grid grid-cols-2 gap-4">
         {/* Buy Form */}
         <div className="space-y-4">
@@ -96,7 +96,7 @@ const OrderForm = ({
             </div>
           </div>
 
-          <button className="w-full bg-green-500 hover:bg-green-600 text-white py-3 rounded font-semibold">
+          <button className="w-full bg-emerald-400 hover:bg-emerald-600 text-white py-3 rounded font-semibold">
             Buy BTC
           </button>
         </div>
@@ -154,7 +154,7 @@ const OrderForm = ({
             </div>
           </div>
 
-          <button className="w-full bg-red-500 hover:bg-red-600 text-white py-3 rounded font-semibold">
+          <button className="w-full bg-rose-500 hover:bg-rose-600 text-white py-3 rounded font-semibold">
             Sell BTC
           </button>
         </div>

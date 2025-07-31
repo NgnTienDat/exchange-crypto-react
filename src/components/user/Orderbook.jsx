@@ -1,10 +1,45 @@
-// components/user/Orderbook.jsx
-import React from 'react';
 import { MoreHorizontal, TrendingUp } from 'lucide-react';
+import useMarketData from '../../hooks/useMarketData';
+import useCellHighlights from '../../hooks/useHighlightChange';
 
-const Orderbook = ({ sellOrders, buyOrders, currentPrice }) => {
+const Orderbook = ({ sellOrders, buyOrders, productId }) => {
+  const data = useMarketData(productId);
+  const sellHighlights = useCellHighlights(sellOrders);
+  const buyHighlights = useCellHighlights(buyOrders);
+
+  if (!data) return null;
+  const { price } = data;
+
+  const renderRow = (order, isBuy) => {
+    const highlights = isBuy ? buyHighlights[order.price] : sellHighlights[order.price];
+    const color = isBuy ? 'green' : 'red';
+
+    return (
+      <div
+        key={order.price}
+        className={`grid grid-cols-[2fr_1fr_1fr] gap-2 text-${color}-400 p-1 rounded hover:bg-gray-700`}
+      >
+        {/* <span className={`transition-all ${color === 'green' && highlights?.price ? 'bg-green-900/40' : ''} ${color === 'red' && highlights?.price ? 'bg-red-900/40' : ''}`}> */}
+
+        <span className={`${highlights?.price ? `bg-${color}-900/40 transition-all` : ''}`}>
+          {order.price.toFixed(2)}
+        </span>
+        <span className={`${highlights?.amount ? `bg-${color}-900/40 transition-all` : ''}`}>
+        {/* <span className={`transition-all ${color === 'green' && highlights?.amount ? 'bg-green-900/40' : ''} ${color === 'red' && highlights?.amount ? 'bg-red-900/40' : ''}`}> */}
+
+          {order.amount.toFixed(5)}
+        </span>
+        <span className={`text-right ${highlights?.total ? `bg-${color}-900/40 transition-all` : ''}`}>
+        {/* <span className={`text-right transition-all ${color === 'green' && highlights?.total ? 'bg-green-900/40' : ''} ${color === 'red' && highlights?.total ? 'bg-red-900/40' : ''}`}> */}
+
+          {(order.total / 1000).toFixed(2)}
+        </span>
+      </div>
+    );
+  };
+
   return (
-    <div className="w-1/5 bg-gray-800 border-r border-gray-700">
+    <div className="">
       <div className="p-4">
         <div className="flex items-center justify-between mb-4">
           <h3 className="font-semibold">Order Book</h3>
@@ -13,35 +48,23 @@ const Orderbook = ({ sellOrders, buyOrders, currentPrice }) => {
 
         <div className="space-y-1 text-xs">
           {/* Header */}
-          <div className="flex justify-between text-gray-400 pb-2">
+          <div className="grid grid-cols-[2fr_1fr_1fr] gap-2 text-gray-400 pb-2">
             <span>Price (USDT)</span>
             <span>Amount (BTC)</span>
             <span>Total</span>
           </div>
 
           {/* Sell Orders */}
-          {sellOrders.map((order, index) => (
-            <div key={index} className="flex justify-between text-red-400 hover:bg-gray-700 p-1 rounded">
-              <span>{order.price.toFixed(2)}</span>
-              <span>{order.amount.toFixed(5)}</span>
-              <span>{order.total}K</span>
-            </div>
-          ))}
+          {sellOrders.slice(-15).map(order => renderRow(order, false))}
 
           {/* Current Price */}
           <div className="flex justify-between items-center py-3 border-y border-gray-600">
-            <span className="text-green-400 font-bold">{currentPrice.toLocaleString()}</span>
+            <span className="text-green-400 font-bold">{price.toLocaleString()}</span>
             <TrendingUp className="w-4 h-4 text-green-400" />
           </div>
 
           {/* Buy Orders */}
-          {buyOrders.map((order, index) => (
-            <div key={index} className="flex justify-between text-green-400 hover:bg-gray-700 p-1 rounded">
-              <span>{order.price.toFixed(2)}</span>
-              <span>{order.amount.toFixed(5)}</span>
-              <span>{order.total}K</span>
-            </div>
-          ))}
+          {buyOrders.slice(-15).map(order => renderRow(order, true))}
         </div>
       </div>
     </div>

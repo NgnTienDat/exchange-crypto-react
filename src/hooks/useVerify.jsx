@@ -23,7 +23,7 @@ function useVerify() {
         },
         onError: (err) => {
             console.log(err);
-            // toast.error(err.response.data.message);
+            toast.error(err.response.data.message);
         },
     });
     return { isLoading, verify };

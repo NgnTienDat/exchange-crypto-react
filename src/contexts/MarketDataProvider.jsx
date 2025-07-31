@@ -1,10 +1,8 @@
-// components/MarketDataProvider.jsx
 import { useEffect } from 'react';
 import useSocket from '../hooks/useSocket';
 import { useDispatch } from 'react-redux';
 import { updateMarketData } from '../store/marketDataSlice';
-
-const PRODUCT_IDS = ['BTC-USD', 'ETH-USD', 'DOGE-USD', 'XRP-USD ', 'USDT-USD']
+import { PRODUCT_IDS } from '../utils/helper';
 
 
 export default function MarketDataProvider() {
@@ -17,6 +15,7 @@ export default function MarketDataProvider() {
     const subs = PRODUCT_IDS.map(productId => {
       return stompClient.subscribe(`/topic/market/${productId}`, (msg) => {
         const data = JSON.parse(msg.body);
+        // console.log("market data: ", data)
         dispatch(updateMarketData({ productId, data }));
       });
     });
