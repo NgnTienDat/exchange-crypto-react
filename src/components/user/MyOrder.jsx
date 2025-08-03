@@ -3,7 +3,7 @@ import React from 'react';
 
 const MyOrder = () => {
     return (
-        <div className="bg-gray-800 border-t border-gray-700 p-4">
+        <div className="bg-neutral-800 rounded p-4">
             <div className="flex space-x-6 mb-4">
                 <button className="text-yellow-500 border-b-2 border-yellow-500 pb-2">Open Orders(0)</button>
                 <button className="text-gray-400 pb-2">Order History</button>

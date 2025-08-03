@@ -3,6 +3,7 @@ import useMarketData from "../../hooks/useMarketData";
 
 const TokenRow = ({ product }) => {
     const data = useMarketData(product.id)
+    
 
     if (!data) return null;
 
