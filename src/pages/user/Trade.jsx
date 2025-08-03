@@ -159,9 +159,9 @@ const Trade = () => {
   }, [openTradeDetail, productId]);
 
   return (
-    <div className="min-h-screen  text-white">
+    <div className="min-h-screen w-[99%] text-white p-1">
       <TradeHeader productId={productId} />
-      <div className="flex space-x-1 p-1">
+      <div className="flex space-x-1 py-1">
         <div className='w-[23%] bg-neutral-800 rounded'>
           <Orderbook sellOrders={sellOrders} buyOrders={buyOrders} productId={productId} />
         </div>
@@ -182,10 +182,12 @@ const Trade = () => {
         </div>
         <div className='w-[23%]'>
 
-          <TradeSidebar recentTrades={[]} tradingPairs={[]} />
+          <TradeSidebar recentTrades={[]} tradingPairs={[]} productId={productId}/>
         </div>
       </div>
-      <MyOrder />
+      <div className='w-[99.7%]'>
+        <MyOrder />
+      </div>
     </div>
   );
 };

@@ -8,6 +8,7 @@ const TradeHeader = ({ productId }) => {
   const data = useMarketData(productId);
   if (!data) return null;
   const { price } = data;
+
   return (
     <div className="bg-neutral-800 rounded p-4">
       <div className="flex items-center justify-between">
@@ -19,7 +20,7 @@ const TradeHeader = ({ productId }) => {
             </div>
             <div>
               <div className="flex items-center space-x-7">
-                <span className="text-2xl font-bold">BTC/USDT</span>
+                <span className="text-2xl font-bold">{productId}</span>
                 <span className="text-2xl font-bold">{price.toLocaleString()}</span>
               </div>
               <div className="flex items-center space-x-5 text-sm text-gray-400">

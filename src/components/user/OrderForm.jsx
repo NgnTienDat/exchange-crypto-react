@@ -53,7 +53,7 @@ const OrderForm = ({
               type="text"
               value={buyPrice}
               onChange={(e) => setBuyPrice(e.target.value)}
-              className="w-full bg-gray-700 rounded p-3 text-right"
+              className="w-full border-2 border-gray-700 rounded-lg p-3 text-right"
               placeholder="118,108.86 USDT"
             />
           </div>
@@ -64,7 +64,7 @@ const OrderForm = ({
               type="text"
               value={buyAmount}
               onChange={(e) => setBuyAmount(e.target.value)}
-              className="w-full bg-gray-700 rounded p-3 text-right"
+              className="w-full border-2 border-gray-700 rounded-lg p-3 text-right"
               placeholder="BTC"
             />
           </div>
@@ -111,7 +111,7 @@ const OrderForm = ({
               type="text"
               value={sellPrice}
               onChange={(e) => setSellPrice(e.target.value)}
-              className="w-full bg-gray-700 rounded p-3 text-right"
+              className="w-full border-2 border-gray-700 rounded-lg p-3 text-right"
               placeholder="118,108.86 USDT"
             />
           </div>
@@ -122,7 +122,7 @@ const OrderForm = ({
               type="text"
               value={sellAmount}
               onChange={(e) => setSellAmount(e.target.value)}
-              className="w-full bg-gray-700 rounded p-3 text-right"
+              className="w-full border-2 border-gray-700 rounded-lg p-3 text-right"
               placeholder="BTC"
             />
           </div>
