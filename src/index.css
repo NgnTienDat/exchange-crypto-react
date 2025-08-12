@@ -1,4 +1,7 @@
 @import "tailwindcss";
+@theme {
+  --bg-light: rgba(46,46,46,0.09); 
+}
 
 /* :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;

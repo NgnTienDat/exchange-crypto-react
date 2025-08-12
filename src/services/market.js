@@ -1,4 +1,3 @@
-// src/layouts/user/JS/market.js
 export function start() {
   const ws = new WebSocket('wss://advanced-trade-ws.coinbase.com');
 

@@ -81,12 +81,12 @@ const TradeSidebar = ({ tradingPairs, productId }) => {
 
     setRecentTrades((prev) => {
       const updated = [newTrade, ...prev];
-      return updated.slice(0, 15);
+      return updated.slice(0, 20);
     });
   });
 
   return (
-    <div className="bg-neutral-800 rounded">
+    <div className="rounded bg-white">
       <div className="p-4">
         {/* Market Trades */}
         <div className="mb-6">
@@ -105,7 +105,7 @@ const TradeSidebar = ({ tradingPairs, productId }) => {
             {recentTrades.map((trade, index) => (
               <div
                 key={index}
-                className={`flex justify-between ${
+                className={`flex justify-between font-bold ${
                   // Logic hiển thị màu không cần thay đổi
                   trade.type === 'buy' ? 'text-green-400' : 'text-red-400'
                 } hover:bg-gray-700 p-1 rounded transition-all duration-150 ease-in-out`}

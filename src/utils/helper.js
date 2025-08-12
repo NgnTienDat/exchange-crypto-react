@@ -8,6 +8,7 @@ export const endpoints = {
   refresh: "/auth/refresh",
   enable2fa: "/auth/2fa/setup",
   verifyCode: "/auth/2fa/verify-code",
+  myAssets: "/api/assets/my",
   productDetail: (productId) => `/api/trade/${productId}`,
 }
 
