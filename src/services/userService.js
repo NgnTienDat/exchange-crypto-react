@@ -35,13 +35,13 @@ export async function logoutAPI() {
 
 export async function getCurrentUser() {
   const res = await AUTH_REQUEST.get(endpoints.info);
-  console.log("Current: ", res.data)
+  // console.log("Current: ", res.data)
 
 
   if (res.status != 200) throw new Error("Error currentUser");
 
   const data = res.data;
-  console.log("Current user: ", data)
+  // console.log("Current user: ", data)
 
   return data?.result || null
 }

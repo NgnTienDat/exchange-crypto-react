@@ -7,5 +7,7 @@ export async function openTrade(productId) {
   if (res.status !== 200) throw new Error(res.response.data);
   const data = res.data.result;
 
+
+
   return data;
 }

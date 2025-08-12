@@ -3,9 +3,12 @@ import { FaUserCircle } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import useUser from "../../hooks/useUser";
 import useLogout from "../../hooks/useLogout";
+import useMyAsset from "../../hooks/useMyAsset";
 
 export default function Navbar() {
   const { user, isLoading } = useUser();
+  const { assets } = useMyAsset();
+  // console.log("ASSETS FROM NAVBAR: ", assets)
   const { logout } = useLogout();
   const navigate = useNavigate();
 
