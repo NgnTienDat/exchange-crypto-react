@@ -4,20 +4,16 @@ import TradeHeader from '../../components/user/TradeHeader';
 import MyOrder from '../../components/user/MyOrder';
 import TradeSidebar from '../../components/user/TradeSidebar';
 import OrderForm from '../../components/user/OrderForm';
-import CandleChart from '../../components/user/CandleChart';
 import Orderbook from '../../components/user/Orderbook';
-import useSocket from '../../hooks/useSocket';
 import useTrade from '../../hooks/useTrade';
 import useSubscribeDepth from '../../hooks/useSubscribeDepth';
 import { useParams } from 'react-router-dom';
-import useSubscribeKline from '../../hooks/useSubscribeKline';
 import useMyAsset from '../../hooks/useMyAsset';
 import TradingViewWidget from './TradingViewWidget';
+import MyBalance from '../../components/user/MyBalance';
 
 const Trade = () => {
   const { productId } = useParams();
-  const [currentPrice, setCurrentPrice] = useState(118401.22);
-  const [priceChange, setPriceChange] = useState(-354.77);
   const [orderType, setOrderType] = useState('limit');
   const [buyAmount, setBuyAmount] = useState('');
   const [activeView, setActiveView] = useState("orderbook");
@@ -52,6 +48,7 @@ const Trade = () => {
   ];
 
 
+
   useSubscribeDepth(productId, (data) => {
 
     const { productId, bids, asks } = data;
@@ -75,6 +72,11 @@ const Trade = () => {
 
   });
 
+  // const renderCount = React.useRef(0);
+  // renderCount.current += 1;
+  // console.log("render count:", renderCount.current);
+
+
 
   useEffect(() => {
     if (productId) {
@@ -87,10 +89,10 @@ const Trade = () => {
       <TradeHeader productId={productId} />
       <div className="flex space-x-1 py-1">
         <div className="w-[23%] rounded">
-          <div className="flex justify-center space-x-1 pt-2 bg-white text-black font-semibold rounded-t-lg">
+          <div className="flex justify-center text-sm space-x-1 pt-2 bg-white text-black font-semibold rounded-t-lg">
             <button
               onClick={() => setActiveView("orderbook")}
-              className={`py-1 px-2 rounded-md ${activeView === "orderbook" ? "bg-gray-300 text-gray-700" : "bg-white"
+              className={`py-1 px-4 rounded-md ${activeView === "orderbook" ? "bg-gray-300 text-gray-700" : "bg-white"
                 }`}
             >
               Order book
@@ -120,25 +122,13 @@ const Trade = () => {
         </div>
 
         <div className="w-[54%] space-y-1">
-          {/* <CandleChart productId={productId} /> */}
-          {/* <TradingViewWidget /> */}
-          <TradingViewWidget productId={productId} />
-          <MyOrder orders={sampleOrders}/>
 
-          {/* <OrderForm
-            orderType={orderType}
-            setOrderType={setOrderType}
-            buyAmount={buyAmount}
-            setBuyAmount={setBuyAmount}
-            sellAmount={sellAmount}
-            setSellAmount={setSellAmount}
-            buyPrice={buyPrice}
-            setBuyPrice={setBuyPrice}
-            sellPrice={sellPrice}
-            setSellPrice={setSellPrice}
-          /> */}
+          <TradingViewWidget productId={productId} />
+          <MyOrder orders={sampleOrders} />
+
+
         </div>
-        <div className='w-[23%]'>
+        <div className='w-[23%] space-y-1'>
 
           <OrderForm
             orderType={orderType}
@@ -152,6 +142,8 @@ const Trade = () => {
             sellPrice={sellPrice}
             setSellPrice={setSellPrice}
           />
+
+          <MyBalance />
         </div>
       </div>
       <div className='w-[99.7%]'>

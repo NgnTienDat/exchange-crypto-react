@@ -307,7 +307,7 @@ const OrderForm = () => {
           <button
             key={t}
             onClick={() => setTab(t.toLowerCase().replace(" ", ""))}
-            className={`px-3 py-1 border-b-2 text-xs font-medium ${tab === t.toLowerCase().replace(" ", "")
+            className={`px-3 py-1 border-b-2 text-md font-medium ${tab === t.toLowerCase().replace(" ", "")
               ? "border-blue-500 text-blue-500"
               : "border-transparent text-gray-500"
               }`}
@@ -318,9 +318,9 @@ const OrderForm = () => {
       </div>
 
       {/* Buy / Sell */}
-      <div className="flex space-x-1 my-3">
+      <div className="flex text-lg font-semibold space-x-1 my-3">
         <button
-          className={`flex-1 py-1 rounded-lg border ${side === "buy"
+          className={`flex-1 py-1 rounded-xl border ${side === "buy"
             ? "bg-emerald-500 text-white"
             : "bg-white text-gray-700 border-gray-300"
             }`}
@@ -329,7 +329,7 @@ const OrderForm = () => {
           Buy
         </button>
         <button
-          className={`flex-1 py-1 rounded-lg border ${side === "sell"
+          className={`flex-1 py-1 rounded-xl border ${side === "sell"
             ? "bg-orange-600 text-white"
             : "bg-white text-gray-700 border-gray-300"
             }`}
@@ -340,7 +340,7 @@ const OrderForm = () => {
       </div>
 
       {/* Available */}
-      <div className="flex justify-between bg-gray-200 p-2 rounded-md text-gray-500 text-xs mb-2">
+      <div className="flex justify-between bg-gray-100 p-2 rounded-md text-gray-400 text-md  mb-2">
         <span>Available</span>
         <span>10 000.00 USDT</span>
       </div>
@@ -351,11 +351,11 @@ const OrderForm = () => {
         {(tab === "limit" || tab === "stoplimit") && (
           <div>
             <span className="text-black">Price</span>
-            <div className="flex items-center bg-gray-200 border rounded-md p-2">
+            <div className="flex items-center font-semibold bg-gray-200 border rounded-lg p-2">
               <input
                 // type="number"
                 placeholder="0"
-                className="flex-1 outline-none text-left text-gray-700"
+                className="flex-1 outline-none text-left text-gray-600"
               />
               <span className="ml-2 text-gray-600 text-xs">USDT</span>
             </div>
@@ -364,11 +364,11 @@ const OrderForm = () => {
 
         {/* Amount */}
         <span className="text-black">Amount</span>
-        <div className="flex items-center bg-gray-200 border rounded-md p-2">
+        <div className="flex items-center font-semibold bg-gray-200 border rounded-md p-2">
           <input
             type="number"
             placeholder="0"
-            className="flex-1 outline-none text-left  text-gray-700"
+            className="flex-1 outline-none text-left  text-gray-600"
           />
           <span className="ml-2 text-gray-600 text-xs">BTC</span>
         </div>
@@ -395,8 +395,8 @@ const OrderForm = () => {
 
       {/* Submit */}
       <button
-        className={`w-full py-2 mt-2 rounded ${side === "buy" ? "bg-emerald-500" : "bg-orange-600"
-          } text-white font-semibold`}
+        className={`w-full py-2 mt-2 rounded-xl ${side === "buy" ? "bg-emerald-500" : "bg-orange-600"
+          } text-white font-semibold text-lg`}
       >
         {side === "buy" ? "Buy BTC" : "Sell BTC"}
       </button>

@@ -14,6 +14,34 @@ export const endpoints = {
 
 export const PRODUCT_IDS = ['BTCUSDT', 'ETHUSDT', 'ADAUSDT', 'DOTUSDT', 'BNBUSDT', 'SOLUSDT']
 
+export const assetConfig = {
+  'BTC': {
+    name: 'Bitcoin',
+    icon: '₿',
+    iconBg: 'bg-orange-500'
+  },
+  'USDT': {
+    name: 'Tether USD',
+    icon: '₮',
+    iconBg: 'bg-green-500'
+  },
+  'USDC': {
+    name: 'USDC',
+    icon: '$',
+    iconBg: 'bg-blue-500'
+  },
+  'ETH': {
+    name: 'Ethereum',
+    icon: 'Ξ',
+    iconBg: 'bg-gray-600'
+  },
+  'BNB': {
+    name: 'Binance Coin',
+    icon: 'B',
+    iconBg: 'bg-yellow-500'
+  }
+};
+
 const cookies = new Cookies();
 const AUTH_TOKEN_KEY = 'auth_token';
 

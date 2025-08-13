@@ -24,7 +24,7 @@ const Market = () => {
   );
 
   return (
-    <div className="text-white min-h-screen p-6">
+    <div className="text-black min-h-screen p-6 bg-gray-100">
       <div className="max-w-7xl mx-auto">
         {/* Header + Search */}
         <div className="mb-6">
@@ -34,13 +34,13 @@ const Market = () => {
             placeholder="Search cryptocurrencies..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-[30%] bg-gray-800  rounded-lg px-4 py-1 text-white placeholder-gray-400 mt-2
+            className="w-[30%] bg-white  rounded-lg px-4 py-1 text-white placeholder-gray-400 mt-2
             focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all"
           />
         </div>
 
         {/* Table */}
-        <div className=" rounded-lg overflow-hidden">
+        <div className=" rounded-lg overflow-hidden bg-white">
           {/* Table Header */}
           <div className="grid grid-cols-6 gap-4 px-6 py-4 text-gray-400 text-sm">
             <div className="">Name</div> 
