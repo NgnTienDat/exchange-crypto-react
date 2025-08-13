@@ -18,9 +18,9 @@ const MyOrder = ({ orders = [] }) => {
   };
 
   return (
-    <div className="bg-white rounded-md border shadow-sm">
+    <div className="bg-white rounded-md border shadow-sm h-screen">
       {/* Tabs */}
-      <div className="flex items-center justify-between border-b px-4 py-2 bg-gray-50">
+      <div className="flex items-center justify-between rounded-md border-b px-4 py-2 bg-gray-50">
         <div className="flex space-x-1">
           {tabs.map((tab) => (
             <button

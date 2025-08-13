@@ -6,6 +6,7 @@ const TokenRow = ({ product }) => {
     
 
     if (!data) return null;
+    // console.log("DATA: ", data) 
 
     const { price, priceChangePercent24h, volume24h, trend } = data;
     const name = product.name;
@@ -23,11 +24,12 @@ const TokenRow = ({ product }) => {
 
     return (
         <div
-            className="grid grid-cols-6 gap-4 items-center rounded px-6 py-3 hover:bg-gray-800 transition-colors cursor-pointer"
+            className="grid grid-cols-6 gap-4 items-center text-gray-700 rounded px-6 py-3
+             hover:bg-gray-200 font-semibold  transition-colors cursor-pointer"
         >
             {/* Name */}
             <div className="flex items-center space-x-3">
-                <div className={`w-8 h-8 rounded-full flex items-center justify-center bg-gray-700 font-bold`}>
+                <div className={`w-8 h-8 rounded-full flex items-center justify-center bg-gray-500 text-white font-bold`}>
                     {icon}
                 </div>
                 <div className="flex items-center space-x-2">
@@ -44,7 +46,7 @@ const TokenRow = ({ product }) => {
 
             {/* Change */}
             <div className="flex flex-col items-end">
-                <div className={`font-medium ${changePositive ? 'text-green-400' : 'text-red-400'}`}>
+                <div className={`font-medium ${changePositive ? 'text-green-500' : 'text-red-400'}`}>
                     {changePositive ? '+' : ''}
                     {formatNumber(priceChangePercent24h)}%
                 </div>
@@ -52,10 +54,10 @@ const TokenRow = ({ product }) => {
 
 
             {/* Volume */}
-            <div className="text-gray-300 text-right">${formatNumber(volume24h)}</div>
+            <div className="text-gray-700 text-right">${formatNumber(volume24h)}</div>
 
             {/* Market Cap */}
-            <div className="text-gray-300 text-right">N/A</div>
+            <div className="text-gray-700 text-right">N/A</div>
 
             {/* Actions */}
             <div className="flex items-center justify-end w-full text-white font-semibold text-sm space-x-4">
