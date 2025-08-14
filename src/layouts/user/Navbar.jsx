@@ -7,6 +7,7 @@ import useMyAsset from "../../hooks/useMyAsset";
 
 export default function Navbar() {
   const { user, isLoading } = useUser();
+  console.log("user: ", user)
   const { assets } = useMyAsset();
   // console.log("ASSETS FROM NAVBAR: ", assets)
   const { logout } = useLogout();

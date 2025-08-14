@@ -12,6 +12,7 @@ export const endpoints = {
   postOrder: "/api/orders/",
   productDetail: (productId) => `/api/trade/${productId}`,
   unsubscribeProduct: (productId) => `/api/trade/unsubscribe/${productId}`,
+  myOrders: (productId) => `/api/orders/${productId}`,
 }
 
 export const PRODUCT_IDS = ['BTCUSDT', 'ETHUSDT', 'ADAUSDT', 'DOTUSDT', 'BNBUSDT', 'SOLUSDT']
