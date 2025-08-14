@@ -9,7 +9,9 @@ export const endpoints = {
   enable2fa: "/auth/2fa/setup",
   verifyCode: "/auth/2fa/verify-code",
   myAssets: "/api/assets/my",
+  postOrder: "/api/orders/",
   productDetail: (productId) => `/api/trade/${productId}`,
+  unsubscribeProduct: (productId) => `/api/trade/unsubscribe/${productId}`,
 }
 
 export const PRODUCT_IDS = ['BTCUSDT', 'ETHUSDT', 'ADAUSDT', 'DOTUSDT', 'BNBUSDT', 'SOLUSDT']
@@ -18,12 +20,12 @@ export const assetConfig = {
   'BTC': {
     name: 'Bitcoin',
     icon: '₿',
-    iconBg: 'bg-orange-500'
+    iconBg: 'bg-amber-400'
   },
   'USDT': {
     name: 'Tether USD',
-    icon: '₮',
-    iconBg: 'bg-green-500'
+    icon: '$',
+    iconBg: 'bg-blue-500'
   },
   'USDC': {
     name: 'USDC',

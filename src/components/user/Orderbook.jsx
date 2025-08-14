@@ -6,6 +6,7 @@ import { useState } from 'react';
 
 const Orderbook = ({ sellOrders, buyOrders, productId }) => {
   const data = useMarketData(productId);
+  // console.log("PRODUCT: ", productId)
   const sellHighlights = useCellHighlights(sellOrders);
   const buyHighlights = useCellHighlights(buyOrders);
   const [recentTrade, setRecentTrade] = useState(null);

@@ -2,11 +2,13 @@ import useMarketData from "../../hooks/useMarketData";
 
 
 const TokenRow = ({ product }) => {
-    const data = useMarketData(product.id)
+
+    // const data = useMarketData(product.id)
+    const data = useMarketData(product.id.replace('-', ''))
     
 
     if (!data) return null;
-    // console.log("DATA: ", data) 
+    console.log("DATA: ", data) 
 
     const { price, priceChangePercent24h, volume24h, trend } = data;
     const name = product.name;

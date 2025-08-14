@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { TrendingUp, TrendingDown, Star, Search, Settings, MoreHorizontal } from 'lucide-react';
 import TradeHeader from '../../components/user/TradeHeader';
 import MyOrder from '../../components/user/MyOrder';
@@ -14,6 +14,9 @@ import MyBalance from '../../components/user/MyBalance';
 
 const Trade = () => {
   const { productId } = useParams();
+  const pairId = productId.replace('-', '')
+  const isMountedRef = useRef(true);
+
   const [orderType, setOrderType] = useState('limit');
   const [buyAmount, setBuyAmount] = useState('');
   const [activeView, setActiveView] = useState("orderbook");
@@ -23,7 +26,7 @@ const Trade = () => {
   const [sellOrders, setSellOrders] = useState([]);
   const [buyOrders, setBuyOrders] = useState([]);
 
-  const { openTradeDetail, isLoading } = useTrade();
+  const { openTradeDetail, closeTradeDetail } = useTrade();
   const sampleOrders = [
     {
       id: 1,
@@ -49,9 +52,9 @@ const Trade = () => {
 
 
 
-  useSubscribeDepth(productId, (data) => {
+  useSubscribeDepth(pairId, (data) => {
 
-    const { productId, bids, asks } = data;
+    const { bids, asks } = data;
 
     const newBuyOrders = bids.map(({ priceLevel, quantity }) => ({
       price: parseFloat(priceLevel),
@@ -78,15 +81,39 @@ const Trade = () => {
 
 
 
+
+
+  // Mở trade khi vào trang
   useEffect(() => {
     if (productId) {
-      openTradeDetail(productId);
+      openTradeDetail(pairId);
     }
-  }, [openTradeDetail, productId]);
+  }, [pairId]); // chỉ phụ thuộc vào pairId
+
+  // Đóng trade khi đóng tab
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      closeTradeDetail(pairId);
+    };
+
+    console.log("called")
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, [pairId]);
+
+
+
+
+
+
+
 
   return (
     <div className="min-h-screen w-[99%] text-white p-1">
-      <TradeHeader productId={productId} />
+      <TradeHeader productId={pairId} />
       <div className="flex space-x-1 py-1">
         <div className="w-[23%] rounded">
           <div className="flex justify-center text-sm space-x-1 pt-2 bg-white text-black font-semibold rounded-t-lg">
@@ -110,20 +137,20 @@ const Trade = () => {
             <Orderbook
               sellOrders={sellOrders}
               buyOrders={buyOrders}
-              productId={productId}
+              productId={pairId}
             />
           ) : (
             <TradeSidebar
               recentTrades={[]}
               tradingPairs={[]}
-              productId={productId}
+              productId={pairId}
             />
           )}
         </div>
 
         <div className="w-[54%] space-y-1">
 
-          <TradingViewWidget productId={productId} />
+          <TradingViewWidget productId={pairId} />
           <MyOrder orders={sampleOrders} />
 
 
@@ -131,6 +158,7 @@ const Trade = () => {
         <div className='w-[23%] space-y-1'>
 
           <OrderForm
+            pair={productId}
             orderType={orderType}
             setOrderType={setOrderType}
             buyAmount={buyAmount}

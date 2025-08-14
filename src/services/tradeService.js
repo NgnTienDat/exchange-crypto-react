@@ -11,3 +11,14 @@ export async function openTrade(productId) {
 
   return data;
 }
+
+export async function closeTrade(productId) {
+  const res = await API.post(endpoints.unsubscribeProduct(productId));
+
+  if (res.status !== 200) throw new Error(res.response.data);
+  const data = res.data.result;
+
+
+
+  return data;
+}
