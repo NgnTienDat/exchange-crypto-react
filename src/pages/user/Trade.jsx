@@ -1,21 +1,18 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { TrendingUp, TrendingDown, Star, Search, Settings, MoreHorizontal } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
 import TradeHeader from '../../components/user/TradeHeader';
 import MyOrder from '../../components/user/MyOrder';
 import TradeSidebar from '../../components/user/TradeSidebar';
 import OrderForm from '../../components/user/OrderForm';
 import Orderbook from '../../components/user/Orderbook';
 import useTrade from '../../hooks/useTrade';
-import useSubscribeDepth from '../../hooks/useSubscribeDepth';
 import { useParams } from 'react-router-dom';
-import useMyAsset from '../../hooks/useMyAsset';
 import TradingViewWidget from './TradingViewWidget';
 import MyBalance from '../../components/user/MyBalance';
+import useNotification from '../../hooks/useNotification';
 
 const Trade = () => {
   const { productId } = useParams();
   const pairId = productId.replace('-', '')
-  const isMountedRef = useRef(true);
 
   const [orderType, setOrderType] = useState('limit');
   const [buyAmount, setBuyAmount] = useState('');
@@ -23,91 +20,32 @@ const Trade = () => {
   const [sellAmount, setSellAmount] = useState('');
   const [buyPrice, setBuyPrice] = useState('118108.86');
   const [sellPrice, setSellPrice] = useState('118108.86');
-  const [sellOrders, setSellOrders] = useState([]);
-  const [buyOrders, setBuyOrders] = useState([]);
 
   const { openTradeDetail, closeTradeDetail } = useTrade();
-  const sampleOrders = [
-    {
-      id: 1,
-      symbol: "BTC / USDT",
-      side: "Buy",
-      type: "Limit",
-      price: 119000,
-      amount: 0.00010,
-      filled: 0.00,
-      percent: 0.00
-    },
-    {
-      id: 2,
-      symbol: "BTC / USDT",
-      side: "Sell",
-      type: "Limit",
-      price: 120000,
-      amount: 0.00010,
-      filled: 0.00,
-      percent: 0.00
-    }
-  ];
-
-
-
-  useSubscribeDepth(pairId, (data) => {
-
-    const { bids, asks } = data;
-
-    const newBuyOrders = bids.map(({ priceLevel, quantity }) => ({
-      price: parseFloat(priceLevel),
-      amount: parseFloat(quantity),
-      total: parseFloat(priceLevel) * parseFloat(quantity),
-    })).sort((a, b) => b.price - a.price); // giá giảm dần (từ trên xuống)
-
-    const newSellOrders = asks.map(({ priceLevel, quantity }) => ({
-      price: parseFloat(priceLevel),
-      amount: parseFloat(quantity),
-      total: parseFloat(priceLevel) * parseFloat(quantity),
-    })).sort((a, b) => b.price - a.price); // giá giảm dần (từ trên xuống)
-
-
-
-    setBuyOrders(newBuyOrders);
-    setSellOrders(newSellOrders);
-
-  });
-
+  useNotification(productId);
   // const renderCount = React.useRef(0);
   // renderCount.current += 1;
   // console.log("render count:", renderCount.current);
 
 
 
-
-
-  // Mở trade khi vào trang
   useEffect(() => {
     if (productId) {
       openTradeDetail(pairId);
     }
-  }, [pairId]); // chỉ phụ thuộc vào pairId
+  }, [pairId]); 
 
-  // Đóng trade khi đóng tab
   useEffect(() => {
     const handleBeforeUnload = () => {
       closeTradeDetail(pairId);
     };
 
-    console.log("called")
     window.addEventListener("beforeunload", handleBeforeUnload);
 
     return () => {
       window.removeEventListener("beforeunload", handleBeforeUnload);
     };
   }, [pairId]);
-
-
-
-
-
 
 
 
@@ -135,8 +73,8 @@ const Trade = () => {
 
           {activeView === "orderbook" ? (
             <Orderbook
-              sellOrders={sellOrders}
-              buyOrders={buyOrders}
+              // sellOrders={sellOrders}
+              // buyOrders={buyOrders}
               productId={pairId}
             />
           ) : (
@@ -151,7 +89,7 @@ const Trade = () => {
         <div className="w-[54%] space-y-1">
 
           <TradingViewWidget productId={pairId} />
-          <MyOrder orders={sampleOrders} />
+          <MyOrder pair={productId} />
 
 
         </div>

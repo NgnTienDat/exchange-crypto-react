@@ -3,7 +3,7 @@ import { endpoints } from "../utils/helper";
 
 
 
-export async function placeOrder({ order }) {
+export async function placeOrder(order) {
   const res = await AUTH_REQUEST.post(endpoints.postOrder, {
     getCryptoId: order.getCryptoId,
     giveCryptoId: order.giveCryptoId,
@@ -14,10 +14,21 @@ export async function placeOrder({ order }) {
     orderType:  order.orderType
   });
 
-  if (res.status !== 200) throw new Error(res.response.data);
+  if (res.status !== 201) throw new Error(res.response.data);
   const data = res.data.result;
 
   return data;
 }
 
 
+
+export async function getOrdersByPairId(pairId) {
+  const res = await AUTH_REQUEST.get(endpoints.myOrders(pairId));
+
+  if (res.status != 200) throw new Error("Error currentUser");
+
+  const data = res.data;
+  
+
+  return data?.result || null
+}

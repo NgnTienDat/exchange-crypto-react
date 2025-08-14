@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import useMyAsset from "../../hooks/useMyAsset";
 import useMarketData from "../../hooks/useMarketData";
+import useOrder from "../../hooks/useOrder";
 
 const OrderForm = ({ pair }) => {
   const [tab, setTab] = useState("limit");
@@ -9,9 +10,12 @@ const OrderForm = ({ pair }) => {
   const [error, setError] = useState("");
   const [price, setPrice] = useState("");
   const [isLockOrder, setLockOrder] = useState(true);
+  const { placeNewOrder } = useOrder(pair)
 
   const tabs = ["Limit", "Market", "Stop Limit"];
   const { assets } = useMyAsset();
+
+
 
 
   const data = useMarketData(pair.replace('-', ''));
@@ -69,16 +73,48 @@ const OrderForm = ({ pair }) => {
   const handleAmountChange = (e) => {
     const value = e.target.value;
     setAmount(value);
-    if (amount === null) setLockOrder(true)
+    // if (amount === null) setLockOrder(true)
     validateBalance(value, price);
   };
 
   const handlePriceChange = (e) => {
     const value = e.target.value;
     setPrice(value);
-    if (price === null) setLockOrder(true)
+    // if (price === null) setLockOrder(true)
     validateBalance(amount, value);
   };
+
+
+
+
+
+  const handleSubmit = () => {
+
+    let getCryptoId = baseSymbol
+    let giveCryptoId = quoteSymbol
+    let orderSide = 'BID'
+    const orderType = tab.toUpperCase()
+
+    if (side == 'sell') {
+      getCryptoId = quoteSymbol
+      giveCryptoId = baseSymbol
+      orderSide = 'ASK'
+    }
+
+    const order = {
+      'getCryptoId': getCryptoId,
+      'giveCryptoId': giveCryptoId,
+      'side': orderSide,
+      'price': price.toString(),
+      'quantity': amount.toString(),
+      'timeInForce': "GTC",
+      'orderType': orderType
+    }
+
+    console.log("ORDER: ", order)
+    placeNewOrder(order)
+  }
+
 
 
   return (
@@ -102,7 +138,7 @@ const OrderForm = ({ pair }) => {
       {/* Buy / Sell */}
       <div className="flex text-lg font-semibold space-x-1 my-3">
         <button
-          className={`flex-1 py-1 rounded-xl border ${side === "buy"
+          className={`flex-1 py-1 rounded-xl cursor-pointer border ${side === "buy"
             ? "bg-emerald-500 text-white"
             : "bg-white text-gray-700 border-gray-300"
             }`}
@@ -111,7 +147,7 @@ const OrderForm = ({ pair }) => {
           Buy
         </button>
         <button
-          className={`flex-1 py-1 rounded-xl border ${side === "sell"
+          className={`flex-1 py-1 rounded-xl cursor-pointer border ${side === "sell"
             ? "bg-orange-600 text-white"
             : "bg-white text-gray-700 border-gray-300"
             }`}
@@ -192,15 +228,19 @@ const OrderForm = ({ pair }) => {
 
       {/* Submit */}
       <button
-        className={`w-full py-2 mt-2 rounded-xl ${!!error || !amount || !price || Number(amount) === 0 || Number(price) === 0
-            ? "bg-gray-400 cursor-not-allowed"
-            : side === "buy"
-              ? "bg-emerald-500"
-              : "bg-orange-600"
+        onClick={handleSubmit}
+        className={`w-full py-2 mt-2 rounded-xl ${!!error || !amount || Number(amount) === 0 || (tab !== "market" && (!price || Number(price) === 0))
+          ? "bg-gray-400 cursor-not-allowed"
+          : side === "buy"
+            ? "bg-emerald-500 hover:bg-emerald-600 cursor-pointer"
+            : "bg-orange-600 hover:bg-orange-700 cursor-pointer"
           } text-white font-semibold text-lg`}
         disabled={
-          !!error || !amount || !price || Number(amount) === 0 || Number(price) === 0
+          !!error || !amount || Number(amount) === 0 ||
+          (tab !== "market" && (!price || Number(price) === 0))
         }
+
+
       >
         {side === "buy" ? `Buy ${baseSymbol}` : `Sell ${baseSymbol}`}
       </button>

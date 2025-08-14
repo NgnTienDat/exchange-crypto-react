@@ -13,11 +13,11 @@ function useLogin() {
     mutationFn: ({ email, password }) =>
       loginApi({ email, password }),
     onSuccess: (user) => {
-      setCookieToken(user.token);
 
-      queryClient.setQueryData(["user"], {
-        ...user,
-      });
+      setCookieToken(user.token);
+      
+      queryClient.invalidateQueries(["user"]);
+      
       navigate("/");
     },
     onError: (err) => {
