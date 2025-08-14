@@ -208,8 +208,8 @@ const TradeHeader = ({ productId }) => {
           {/* Pair selector */}
           <div className="flex items-center space-x-5">
             <div className="flex items-center space-x-2 border-r p-2 border-gray-300 ">
-              <div className="size-8 bg-amber-400 rounded-full flex items-center justify-center">
-                <span className="text-white text-lg font-bold">B</span>
+              <div className="size-8 bg-gray-400 rounded-full flex items-center justify-center">
+                <span className="text-white text-lg font-bold">{pair.charAt(0)}</span>
               </div>
               <button className="flex items-center space-x-1 hover:bg-gray-50 px-2 py-1 rounded">
                 <span className="font-medium text-gray-900">{pair || 'BTC-USDT'}</span>

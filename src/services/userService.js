@@ -18,7 +18,7 @@ export async function loginApi({ email, password }) {
 
 
 export async function logoutAPI() {
-  const res = await API.post(endpoints.logout, {
+  const res = await AUTH_REQUEST.post(endpoints.logout, {
     token: getAccessToken(),
   }, {
     headers: {

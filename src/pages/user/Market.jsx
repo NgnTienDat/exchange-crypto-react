@@ -8,12 +8,12 @@ const Market = () => {
   const [searchTerm, setSearchTerm] = useState('');
 
   const tokenList = [
-    { id: 'BTCUSDT', name: 'Bitcoin', symbol: 'BTC' },
-    { id: 'ETHUSDT', name: 'Ethereum', symbol: 'ETH' },
-    { id: 'ADAUSDT', name: 'Cardano', symbol: 'ADA' },
-    { id: 'DOTUSDT', name: 'Polkadot', symbol: 'DOT' },
-    { id: 'BNBUSDT', name: 'BNB', symbol: 'BNB' },
-    { id: 'SOLUSDT', name: 'Solana', symbol: 'SOL' }
+    { id: 'BTC-USDT', name: 'Bitcoin', symbol: 'BTC' },
+    { id: 'ETH-USDT', name: 'Ethereum', symbol: 'ETH' },
+    { id: 'ADA-USDT', name: 'Cardano', symbol: 'ADA' },
+    { id: 'DOT-USDT', name: 'Polkadot', symbol: 'DOT' },
+    { id: 'BNB-USDT', name: 'BNB', symbol: 'BNB' },
+    { id: 'SOL-USDT', name: 'Solana', symbol: 'SOL' }
     // thêm các mã token khác tùy backend của bạn btcusdt, ethusdt, adausdt, dotusdt, bnbusdt, solusdt
   ];
 

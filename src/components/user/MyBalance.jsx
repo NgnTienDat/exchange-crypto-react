@@ -19,7 +19,7 @@ const MyBalance = () => {
 
         const balance = parseFloat(asset.balance) || 0;
         const lockedBalance = parseFloat(asset.lockedBalance) || 0;
-        // const availableBalance = balance - lockedBalance;
+        const availableBalance = balance - lockedBalance;
 
         return {
             id: asset.cryptoId.toLowerCase(),
@@ -31,6 +31,7 @@ const MyBalance = () => {
                 ? lockedBalance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })
                 : '—',
             balance: balance,
+            availableBalance: availableBalance,
             lastUpdated: asset.lastUpdated
         };
     });
@@ -93,7 +94,7 @@ const MyBalance = () => {
 
                             {/* Available */}
                             <div className="text-right">
-                                <div className="text-sm font-medium text-gray-900">{asset.balance.toLocaleString()}</div>
+                                <div className="text-sm font-medium text-gray-900">{asset.availableBalance.toLocaleString()}</div>
                                 <div className="text-xs text-gray-500">{asset.symbol}</div>
                             </div>
                         </div>
