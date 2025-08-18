@@ -8,7 +8,7 @@ const TokenRow = ({ product }) => {
     
 
     if (!data) return null;
-    console.log("DATA: ", data) 
+    // console.log("DATA: ", data) 
 
     const { price, priceChangePercent24h, volume24h, trend } = data;
     const name = product.name;

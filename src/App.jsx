@@ -14,6 +14,7 @@ import NotFound from './pages/NotFound'
 import MyAccount from './pages/user/MyAccount'
 import PrivateRoute from './routers/PrivateRoute'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import Body from './layouts/user/Body'
 import { AuthProvider } from './contexts/AuthContext'
 import TwoFactorAuthenticate from './pages/user/account/TwoFactorAuthenticate'
@@ -67,7 +68,7 @@ function App() {
           </Routes>
         </BrowserRouter>
         <Toaster
-          position="top-right"
+          position="bottom-left"
           gutter={12}
           containerStyle={{ margin: "8px" }}
           toastOptions={{
@@ -87,7 +88,7 @@ function App() {
           }}
         />{" "}
       </AuthProvider>
-
+      <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   )
 }

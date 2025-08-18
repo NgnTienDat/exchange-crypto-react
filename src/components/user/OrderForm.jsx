@@ -11,6 +11,7 @@ const OrderForm = ({ pair }) => {
   const [price, setPrice] = useState("");
   const [isLockOrder, setLockOrder] = useState(true);
   const { placeNewOrder } = useOrder(pair)
+  
 
   const tabs = ["Limit", "Market", "Stop Limit"];
   const { assets } = useMyAsset();
@@ -73,14 +74,12 @@ const OrderForm = ({ pair }) => {
   const handleAmountChange = (e) => {
     const value = e.target.value;
     setAmount(value);
-    // if (amount === null) setLockOrder(true)
     validateBalance(value, price);
   };
 
   const handlePriceChange = (e) => {
     const value = e.target.value;
     setPrice(value);
-    // if (price === null) setLockOrder(true)
     validateBalance(amount, value);
   };
 
@@ -105,13 +104,13 @@ const OrderForm = ({ pair }) => {
       'getCryptoId': getCryptoId,
       'giveCryptoId': giveCryptoId,
       'side': orderSide,
-      'price': price.toString(),
+      productId: pair,
+      'price': orderType === 'MARKET' ? bestPrice.toString() : price.toString(),
       'quantity': amount.toString(),
       'timeInForce': "GTC",
       'orderType': orderType
     }
 
-    console.log("ORDER: ", order)
     placeNewOrder(order)
   }
 

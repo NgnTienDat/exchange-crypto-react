@@ -9,10 +9,13 @@ import { useParams } from 'react-router-dom';
 import TradingViewWidget from './TradingViewWidget';
 import MyBalance from '../../components/user/MyBalance';
 import useNotification from '../../hooks/useNotification';
+import { getOpenOrdersByPairId, getOrderHistoryByPairId } from '../../services/orderService';
+import useUser from '../../hooks/useUser';
 
 const Trade = () => {
   const { productId } = useParams();
   const pairId = productId.replace('-', '')
+  const { user } = useUser();
 
   const [orderType, setOrderType] = useState('limit');
   const [buyAmount, setBuyAmount] = useState('');
@@ -22,7 +25,7 @@ const Trade = () => {
   const [sellPrice, setSellPrice] = useState('118108.86');
 
   const { openTradeDetail, closeTradeDetail } = useTrade();
-  useNotification(productId);
+  useNotification(user?.id);
   // const renderCount = React.useRef(0);
   // renderCount.current += 1;
   // console.log("render count:", renderCount.current);
@@ -30,6 +33,10 @@ const Trade = () => {
 
 
   useEffect(() => {
+
+    getOpenOrdersByPairId(productId)
+    getOrderHistoryByPairId(productId)
+
     if (productId) {
       openTradeDetail(pairId);
     }
