@@ -57,3 +57,15 @@ export async function getOrderHistoryByPairId(pairId) {
 
   return data?.result || null
 }
+
+export async function getAllOrder() {
+  const res = await AUTH_REQUEST.get(endpoints.allOrders);
+
+  if (res.status != 200) throw new Error("Error order");
+
+  const data = res.data;
+  console.log("history: ", data.result)
+  
+
+  return data?.result || null
+}

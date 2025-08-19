@@ -10,6 +10,7 @@ export const endpoints = {
   verifyCode: "/auth/2fa/verify-code",
   myAssets: "/api/assets/my",
   postOrder: "/api/orders/",
+  allOrders: "/api/orders/history",
   productDetail: (productId) => `/api/trade/${productId}`,
   unsubscribeProduct: (productId) => `/api/trade/unsubscribe/${productId}`,
   myOrders: (productId) => `/api/orders/${productId}`,
@@ -63,10 +64,6 @@ export const getAccessToken = () => {
   return cookies.get(AUTH_TOKEN_KEY) || null;
 };
 
-// export const getRefreshToken = () => {
-//   const token = cookies.get(AUTH_TOKEN_KEY);
-//   return token?.refreshToken || null;
-// };
 
 export const AuthenticationHeader = () => {
   const accessToken = getAccessToken();
@@ -78,4 +75,20 @@ export const AuthenticationHeader = () => {
 
 export const removeCookieToken = () => {
   cookies.remove(AUTH_TOKEN_KEY, { path: '/' });
+};
+
+
+export const formatNumber = (num) =>
+  num?.toLocaleString('en-US', {
+    maximumFractionDigits: 2,
+  });
+
+
+export const formatDate = (dateStr) => {
+  const date = new Date(dateStr);
+  const day = date.getDate();
+  const month = date.toLocaleString("en-US", { month: "short" });
+  const hours = String(date.getHours()).padStart(2, "0");
+  const minutes = String(date.getMinutes()).padStart(2, "0");
+  return `${day} ${month}, ${hours}:${minutes}`;
 };

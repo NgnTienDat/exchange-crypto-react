@@ -37,8 +37,8 @@ const MyBalance = () => {
     });
 
     // Calculate totals (for display purposes - would need price data for USD conversion)
-    const totalBalance = processedAssets.reduce((sum, asset) => sum + asset.balance, 0);
-    const totalLocked = processedAssets.reduce((sum, asset) => sum + asset.lockedBalance, 0);
+    // const totalBalance = processedAssets.reduce((sum, asset) => sum + asset.balance, 0);
+    // const totalLocked = processedAssets.reduce((sum, asset) => sum + asset.lockedBalance, 0);
 
     return (
         <div className="bg-white rounded-lg border border-gray-200 p-6 w-full max-w-md">

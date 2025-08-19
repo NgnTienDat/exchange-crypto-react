@@ -6,7 +6,6 @@ import Market from './pages/user/Market'
 import Trade from './pages/user/Trade'
 import Security from './pages/user/account/Security'
 import Dashboard from './pages/user/account/Dashboard'
-import Order from './pages/user/account/Order'
 import Asset from './pages/user/account/Asset'
 import Register from './pages/auth/Register'
 import Authentication from './pages/auth/Authentication'
@@ -22,6 +21,7 @@ import { Toaster } from 'react-hot-toast'
 import { SocketProvider } from './hooks/useSocket'
 import BuyCrypto from './pages/user/BuyCrypto'
 import MarketDataProvider from './contexts/MarketDataProvider'
+import OrderHistory from './pages/user/account/OrderHistory'
 
 function App() {
 
@@ -59,7 +59,7 @@ function App() {
                 <Route index element={<Dashboard />} />
                 <Route path="dashboard" element={<Dashboard />} />
                 <Route path="security" element={<Security />} />
-                <Route path="orders" element={<Order />} />
+                <Route path="orders/history" element={<OrderHistory />} />
                 <Route path="asset" element={<Asset />} />
               </Route>
 

@@ -80,9 +80,9 @@ const MySidebar = () => {
                                         : 'hover:bg-gray-700 text-gray-300'
                                     }`}
                             >
-                                Spot Wallet
+                                Overview
                             </button>
-                            <button
+                            {/* <button
                                 onClick={() => handleItemClick('/my/asset/futures')}
                                 className={`w-full text-left p-2 pl-8 rounded transition-colors ${isActive('/my/asset/futures')
                                         ? 'bg-gray-600 text-white'
@@ -99,7 +99,7 @@ const MySidebar = () => {
                                     }`}
                             >
                                 Earn
-                            </button>
+                            </button> */}
                         </div>
                     )}
                 </div>
