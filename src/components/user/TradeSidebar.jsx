@@ -1,20 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import useSubscribeMarketTrade from '../../hooks/useSubscribeMarketTrade';
 
-const TradeSidebar = ({ tradingPairs, productId }) => {
+const TradeSidebar = ({ productId }) => {
   const [recentTrades, setRecentTrades] = useState([]);
 
-  // **GIẢ ĐỊNH:** Server của bạn sẽ trả về một trường boolean là `isBuyerMaker`.
-  // `true` nếu bên mua là Maker (tương đương "m": true của Binance).
-  // `false` nếu bên mua là Taker (tương đương "m": false của Binance).
   useSubscribeMarketTrade(productId, (data) => {
     const newTrade = {
       price: data.price,
       amount: data.quantity,
-      time: new Date(data.tradeTime).toLocaleTimeString('en-GB'), // 'en-GB' để có format HH:mm:ss
-      // --- LOGIC SỬA ĐỔI ---
-      // Nếu bên mua là Maker -> đây là lệnh Bán chủ động (Màu đỏ)
-      // Nếu bên mua là Taker -> đây là lệnh Mua chủ động (Màu xanh)
+      time: new Date(data.tradeTime).toLocaleTimeString('en-GB'),
       type: data.isMaker ? 'sell' : 'buy', 
     };
 

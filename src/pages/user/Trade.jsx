@@ -85,11 +85,7 @@ const Trade = () => {
               productId={pairId}
             />
           ) : (
-            <TradeSidebar
-              recentTrades={[]}
-              tradingPairs={[]}
-              productId={pairId}
-            />
+            <TradeSidebar productId={pairId} />
           )}
         </div>
 

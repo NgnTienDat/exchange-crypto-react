@@ -113,7 +113,7 @@ import { TrendingDown, TrendingUp } from 'lucide-react';
 import useMarketData from '../../hooks/useMarketData';
 import useSubscribeMarketTrade from '../../hooks/useSubscribeMarketTrade';
 import { useState } from 'react';
-import useSubscribeDepth from '../../hooks/useSubscribeDepth'; // hook mới dùng React Query
+import useSubscribeDepth from '../../hooks/useSubscribeDepth'; 
 
 const Orderbook = ({ productId }) => {
   const data = useMarketData(productId);

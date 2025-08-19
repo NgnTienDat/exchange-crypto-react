@@ -9,9 +9,9 @@ const Security = () => {
   const {user} = useUser()
   
   return (
-    <div className='p-5'>
+    <div className='px-7 py-5 rounded-2xl bg-white w-[50%] mt-5 ml-4'>
       <div className='mb-6'>
-        <h2 className='text-white text-2xl font-semibold mb-4'>Security Checkup</h2>
+        <h2 className='text-black text-2xl font-semibold mb-4'>Security Checkup</h2>
       </div>
       
       <div>
@@ -30,9 +30,9 @@ const Security = () => {
           </div>
           
           <div className='flex flex-col'>
-            <span className='text-white text-xl font-semibold'>Two-Factor Authentication (2FA)</span>
+            <span className='text-black text-xl font-semibold'>Two-Factor Authentication (2FA)</span>
             {!user?.tfaEnabled ? (
-              <Link to="/my/security/2fa" className='text-amber-300 hover:text-amber-200'>
+              <Link to="/my/security/2fa" className='text-amber-400 hover:text-amber-200'>
                 Enable Google Authenticator Now
               </Link>
             ) : (

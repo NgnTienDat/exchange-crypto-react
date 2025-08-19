@@ -3,16 +3,15 @@ import useMarketData from "../../hooks/useMarketData";
 
 const TokenRow = ({ product }) => {
 
-    // const data = useMarketData(product.id)
     const data = useMarketData(product.id.replace('-', ''))
-    
+
 
     if (!data) return null;
     // console.log("DATA: ", data) 
 
     const { price, priceChangePercent24h, volume24h, trend } = data;
     const name = product.name;
-    const symbol = product.symbol; 
+    const symbol = product.symbol;
     const changePositive = priceChangePercent24h >= 0;
 
     const icon = symbol.charAt(0)
@@ -22,7 +21,7 @@ const TokenRow = ({ product }) => {
             maximumFractionDigits: 2,
         });
 
-    
+
 
     return (
         <div
