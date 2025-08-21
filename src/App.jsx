@@ -22,6 +22,9 @@ import { SocketProvider } from './hooks/useSocket'
 import BuyCrypto from './pages/user/BuyCrypto'
 import MarketDataProvider from './contexts/MarketDataProvider'
 import OrderHistory from './pages/user/account/OrderHistory'
+import SignUp from './pages/auth/SignUp'
+import VerifyEmail from './pages/auth/VerifyEmail'
+import CreatePassword from './pages/auth/CreatePassword'
 
 function App() {
 
@@ -36,7 +39,9 @@ function App() {
 
             <Route path="/auth" element={<Authentication />}>
               <Route path="login" element={<Login />} />
-              <Route path="register" element={<Register />} />
+              <Route path="signup" element={<SignUp />} />
+              <Route path="verify" element={<VerifyEmail />} />
+              <Route path="password" element={<CreatePassword />} />
             </Route>
 
             <Route path="/" element={

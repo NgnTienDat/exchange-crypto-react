@@ -3,7 +3,7 @@ import { Eye, EyeOff, QrCode } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import useLogin from '../../hooks/useLogin';
 
-const Login = () => {
+const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -13,8 +13,7 @@ const Login = () => {
   const { isLoading, login } = useLogin();
 
   const handleSubmit = () => {
-    login({ email, password });
-    navigate('/');
+    navigate('/auth/verify', { state: { email } });
   };
 
   return (
@@ -28,7 +27,7 @@ const Login = () => {
             </div>
             <QrCode className="w-6 h-6 text-gray-500 cursor-pointer hover:text-black transition-colors" />
           </div>
-          <p className="text-gray-800 text-2xl font-medium">Login</p>
+          <p className="text-gray-800 text-2xl font-medium">Sign Up</p>
         </div>
 
         {/* Login Form */}
@@ -45,48 +44,12 @@ const Login = () => {
             />
           </div>
 
-          {/* Password Input */}
-          <div>
-            <label className="block text-gray-700 text-md mb-2">Password</label>
-            <div className="relative">
-              <input
-                type={showPassword ? 'text' : 'password'}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Enter your password"
-                className="w-full bg-white text-gray-900 placeholder-gray-400 rounded-lg 
-                  px-4 py-3 pr-12 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400 transition-all border border-gray-300"
-              />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-600 hover:text-gray-800"
-              >
-                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-              </button>
-            </div>
-          </div>
-
-          {/* Remember Me and Forgot Password */}
-          <div className="flex items-center justify-between text-sm">
-            <label className="flex items-center text-gray-700">
-              <input
-                type="checkbox"
-                checked={rememberMe}
-                onChange={(e) => setRememberMe(e.target.checked)}
-                className="mr-2 w-4 h-4 rounded border-gray-300 text-yellow-500 focus:ring-yellow-400 focus:ring-1"
-              />
-              Remember me
-            </label>
-            <a href="#" className="text-blue-500 hover:text-blue-600 transition-colors">
-              Forgot password?
-            </a>
-          </div>
+          
 
           {/* Login Button */}
           <button
             onClick={handleSubmit}
-            className="w-full bg-yellow-400 hover:bg-yellow-500 font-medium py-3 px-4 rounded-lg transition-all duration-200 text-sm text-black"
+            className="w-full cursor-pointer bg-yellow-400 hover:bg-yellow-500 font-medium py-3 px-4 rounded-lg transition-all duration-200 text-sm text-black"
           >
             Continue
           </button>
@@ -101,7 +64,7 @@ const Login = () => {
           {/* Google Login */}
           <button
             type="button"
-            className="w-full bg-white hover:bg-gray-50 text-gray-700 py-3 px-4 rounded-lg transition-all duration-200 flex items-center justify-center space-x-2 border border-gray-300"
+            className="w-full cursor-pointer bg-white hover:bg-gray-50 text-gray-700 py-3 px-4 rounded-lg transition-all duration-200 flex items-center justify-center space-x-2 border border-gray-300"
           >
             <svg className="w-5 h-5" viewBox="0 0 24 24">
               <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
@@ -116,8 +79,8 @@ const Login = () => {
         {/* Sign Up Link */}
         <div className="text-center mt-6 text-sm">
           <span className="text-gray-600">Don’t have an account? </span>
-          <Link to="/auth/signup" className="text-blue-500 hover:text-blue-600 transition-colors">
-            Sign up now
+          <Link to="/auth/login" className="text-blue-500 hover:text-blue-600 transition-colors">
+            Log in now
           </Link>
         </div>
       </div>
@@ -125,4 +88,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default SignUp;

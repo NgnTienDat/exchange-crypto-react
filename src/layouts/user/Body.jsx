@@ -1,10 +1,10 @@
 import React from 'react'
-import Navbar from './NavBar'
 import { Outlet } from 'react-router-dom'
+import Navbar from './Navbar'
 
 const Body = () => {
   return (
-    <div className="min-h-screen w-screen bg-gray-300 text-white ">
+    <div className="min-h-screen w-screen bg-gray-200 text-white ">
       {/* Navbar cố định ở trên cùng */}
       <div className="fixed top-0 left-0 w-full z-50">
         <Navbar />
