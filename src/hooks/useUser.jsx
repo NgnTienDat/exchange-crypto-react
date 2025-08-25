@@ -6,12 +6,10 @@ function useUser() {
   const { isLoading, data: user } = useQuery({
     queryKey: ["user"],
     queryFn: getCurrentUser,
-    retry: 1,
+    retry: 2,
     enabled: !!getAccessToken(),
-    placeholderData: null,
   });
 
-  // console.log('useUser:', { isLoading, user, token: getAccessToken() })
   return { isLoading, user };
 }
 

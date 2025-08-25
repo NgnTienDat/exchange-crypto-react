@@ -11,7 +11,7 @@ const Footer = () => {
       </p>
 
       {/* Social links */}
-      <div className="flex justify-center space-x-12 text-gray-600">
+      <div className="flex justify-center space-x-12 text-gray-600 font-semibold  ">
         <a
           href="https://github.com/NgnTienDat"
           target="_blank"
@@ -28,7 +28,9 @@ const Footer = () => {
           href="mailto:tie.dat2004@gmail.com"
           className="flex items-center space-x-2 hover:text-black"
         >
-        
+          <svg width="20" height="16" viewBox="0 0 20 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <path d="M2 0h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2zm16 2H2v.5l8 5 8-5V2zm0 2.5l-8 5-8-5V14h16V4.5z" />
+          </svg>
           <span>tie.dat2004@gmail.com</span>
         </a>
 

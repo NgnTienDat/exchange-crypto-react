@@ -8,6 +8,8 @@ export default function Navbar() {
   const { logout } = useLogout();
   const navigate = useNavigate();
 
+  console.log("user: ", user)
+
   const handleLogout = () => {
     logout();
     navigate("/");
@@ -16,13 +18,25 @@ export default function Navbar() {
   return (
     <nav className="text-black font-semibold flex justify-between items-center px-5 relative bg-white">
       <div className="flex items-center space-x-6">
-        <Link to="/" className="text-yellow-500 font-bold text-lg flex items-center">
+        {!user || user.roles?.includes("USER") ? (
+          <>
+            <Link to="/" className="text-yellow-500 font-bold text-lg flex items-center">
+              <span className="text-yellow-400 text-2xl font-bold">CryptoCoin</span>
+            </Link>
+            <Link to="/crypto/buy" className="hover:text-yellow-500">Buy Crypto</Link>
+            <Link to="/market" className="hover:text-yellow-500">Market</Link>
+            <Link to="/trade" className="hover:text-yellow-500">Trade</Link>
+          </>
+        ) : (
+          <>
+            <div className="text-yellow-500 font-bold text-lg flex items-center">
+              <span className="text-yellow-400 text-2xl font-bold">CryptoCoin</span>
+            </div>
+            <span className="hover:text-yellow-500">ADMIN</span>
+            <Link to="/crypto/buy" className="hover:text-yellow-500">Buy Crypto</Link>
+          </>
+        )}
 
-          <span className="text-yellow-400 text-2xl font-bold">CryptoCoin</span>
-        </Link>
-        <Link to="/crypto/buy" className="hover:text-yellow-500">Buy Crypto</Link>
-        <Link to="/market" className="hover:text-yellow-500">Market</Link>
-        <Link to="/trade" className="hover:text-yellow-500">Trade</Link>
       </div>
 
       <div className="flex items-center space-x-4 relative p-4">

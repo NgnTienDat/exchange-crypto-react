@@ -2,15 +2,33 @@ import React, { useState } from 'react';
 import { Eye, EyeOff, QrCode } from 'lucide-react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import useLogin from '../../hooks/useLogin';
+import { verifyCode, verifyOtp } from '../../services/authService';
+import toast from 'react-hot-toast';
 
 const VerifyEmail = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const [code, setCode] = useState('');
   const email = location.state?.email || '';
 
   const handleSubmit = () => {
-    // do something
-    navigate('/auth/password', { state: { email } });
+
+    const data = {
+      email: email,
+      code: code
+    }
+
+    verifyOtp(data)
+      .then((res) => {
+        if (res.code === 200) {
+          navigate('/auth/password', { state: { email } });
+        } 
+      })
+      .catch((err) => {
+        console.error("Lỗi khi verify OTP:", err);
+        toast.error("Invalid OTP code!");
+      });
+
   };
 
   return (
@@ -33,13 +51,12 @@ const VerifyEmail = () => {
           <span></span>
         </div>
 
-        {/* Login Form */}
         <div className="space-y-4">
-          {/* Email Input */}
           <div>
             <label className="block text-gray-700 text-sm font-semibold mb-2">Verification code</label>
             <input
               type="text"
+              onChange={(e) => setCode(e.target.value)}
               placeholder="Enter code from your email"
               className="w-full bg-white text-gray-900 placeholder-gray-400 rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400 transition-all border border-gray-300"
             />
@@ -55,7 +72,7 @@ const VerifyEmail = () => {
             Next
           </button>
 
-         
+
 
         </div>
 
