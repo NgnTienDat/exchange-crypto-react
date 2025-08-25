@@ -25,10 +25,14 @@ import OrderHistory from './pages/user/account/OrderHistory'
 import SignUp from './pages/auth/SignUp'
 import VerifyEmail from './pages/auth/VerifyEmail'
 import CreatePassword from './pages/auth/CreatePassword'
+import AdminUI from './pages/admin/AdminUI'
+import Forbidden from './pages/Forbidden'
+import AdminRoute from './pages/admin/AdminRoute'
 
 function App() {
 
   const queryClient = new QueryClient()
+
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -68,7 +72,21 @@ function App() {
                 <Route path="asset" element={<Asset />} />
               </Route>
 
+              {/* <Route path="admin/dashboard" element={<AdminUI />} /> */}
+              <Route
+                path="/admin/dashboard"
+                element={
+                  <AdminRoute>
+                    <AdminUI />
+                  </AdminRoute>
+                }
+              />
+
+
+
+
               <Route path="*" element={<NotFound />} />
+              <Route path="/not-permission" element={<Forbidden />} />
             </Route>
           </Routes>
         </BrowserRouter>

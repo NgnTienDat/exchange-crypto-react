@@ -1,17 +1,26 @@
 import React, { useState } from 'react';
 import { ArrowLeft, X } from 'lucide-react';
 import useVerify from '../../hooks/useVerify';
+import { getDeviceId } from '../../utils/helper';
 
-const VerifyCodeModal = ({ onClose }) => {
+const VerifyCodeModal = ({ onClose, userId, deviceId }) => {
 
     const [code, setCode] = useState('');
 
 
 
     const { isLoading, verify } = useVerify();
+    console.log("deviceid: ", deviceId)
+    
+
 
     const handleSubmit = () => {
-        verify(code);
+        const data = {
+            userId,
+            code,
+            deviceId
+        }
+        verify(data);
     };
 
 

@@ -1,20 +1,51 @@
-import React, { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Eye, EyeOff, QrCode } from 'lucide-react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import useLogin from '../../hooks/useLogin';
+import { fingerprintToUUID, getDeviceId } from '../../utils/helper';
+import VerifyCodeModal from '../../components/user/VerifyCodeModal';
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
-  const navigate = useNavigate();
+  const [deviceId, setDeviceIdState] = useState('');
+  const [showVerifyModal, setShowVerifyModal] = useState(false);
+  const [pendingUserId, setPendingUserId] = useState(null);
 
-  const { isLoading, login } = useLogin();
+  const { isLoading, login } = useLogin({
+    onRequire2FA: (userId) => {
+      setPendingUserId(userId);  // lưu userId
+      setShowVerifyModal(true);  // mở modal
+    },
+  });
+
+
+  useEffect(() => {
+    const existingDeviceId = getDeviceId();
+
+    if (existingDeviceId) {
+      setDeviceIdState(existingDeviceId);
+      console.log("Existing Device UUID:", existingDeviceId);
+    } else {
+      fingerprintToUUID().then(uuid => {
+        setDeviceIdState(uuid);
+        console.log("Device UUID:", uuid);
+      });
+    }
+  }, []);
+
 
   const handleSubmit = () => {
-    login({ email, password });
-    navigate('/');
+    const loginData = {
+      email,
+      password,
+      deviceId,
+      userAgent: navigator.userAgent
+    };
+
+    login(loginData);
   };
 
   return (
@@ -121,6 +152,14 @@ const Login = () => {
           </Link>
         </div>
       </div>
+      {showVerifyModal && (
+        <VerifyCodeModal
+          onClose={() => setShowVerifyModal(false)}
+          userId={pendingUserId}
+          deviceId={deviceId}
+        />
+      )}
+
     </div>
   );
 };

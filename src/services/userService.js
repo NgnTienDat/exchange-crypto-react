@@ -3,13 +3,19 @@ import { endpoints, getAccessToken } from "../utils/helper";
 
 
 
-export async function loginApi({ email, password }) {
+
+export async function loginApi({ email, password, deviceId, userAgent }) {
+
   const res = await API.post(endpoints.login, {
-    email: email,
-    password: password,
+    email,
+    password,
+    deviceId,
+    userAgent,
   });
 
-  if (res.status !== 200) throw new Error(res.response.data);
+  if (res.status !== 200)
+    throw new Error(res.response.data);
+  console.log("data: ", res.data.result)
   const data = res.data.result;
   // console.log("Token: ", data)
 
@@ -17,18 +23,33 @@ export async function loginApi({ email, password }) {
 }
 
 
+
 export async function logoutAPI() {
   const res = await AUTH_REQUEST.post(endpoints.logout, {
     token: getAccessToken(),
   }, {
     headers: {
-      "Content-Type": "application/json", 
+      "Content-Type": "application/json",
     },
   });
 
   if (res.status !== 200 && res.status !== 201) {
     throw new Error(res.data?.message || "Logout failed");
   }
+}
+
+
+export async function signUpApi({ email, password }) {
+  const res = await API.post(endpoints.createUser, {
+    email: email,
+    password: password,
+  });
+
+  // if (res.status !== 201) throw new Error(res.response.data);
+  // const data = res.data.result;
+  console.log("data signup: ", res)
+
+  return res.data.result;
 }
 
 
@@ -44,4 +65,26 @@ export async function getCurrentUser() {
   // console.log("Current user: ", data)
 
   return data?.result || null
+}
+
+// export async function getAllUsers() {
+//   const res = await AUTH_REQUEST.get(endpoints.allUsers);
+
+//   if (res.status != 200) throw new Error("Error currentUser");
+
+//   const data = res.data;
+//   // console.log("All users: ", data)
+
+//   return data?.result || null
+// }
+
+
+export async function getAllUsers(page = 0, size = 10) {
+  const res = await AUTH_REQUEST.get(`${endpoints.allUsers}?page=${page}&size=${size}`);
+
+  if (res.status !== 200) throw new Error("Error fetching users");
+
+  const data = res.data;
+  return data?.result || null; 
+  // result : content, page, size, totalElements, totalPages
 }

@@ -2,18 +2,21 @@ import React, { useState } from 'react';
 import { Eye, EyeOff, QrCode } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import useLogin from '../../hooks/useLogin';
+import { sendOtp } from '../../services/authService';
 
 const SignUp = () => {
-  const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [rememberMe, setRememberMe] = useState(false);
   const navigate = useNavigate();
 
-  const { isLoading, login } = useLogin();
-
   const handleSubmit = () => {
-    navigate('/auth/verify', { state: { email } });
+
+    try {
+      const data = sendOtp(email);
+      navigate('/auth/verify', { state: { email } });
+    } catch (err) {
+      console.error("Lỗi khi gửi OTP:", err);
+    }
+
   };
 
   return (
@@ -44,7 +47,7 @@ const SignUp = () => {
             />
           </div>
 
-          
+
 
           {/* Login Button */}
           <button

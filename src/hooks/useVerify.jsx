@@ -6,23 +6,19 @@ import toast from "react-hot-toast";
 
 function useVerify() {
     const navigate = useNavigate();
-    //   const queryClient = useQueryClient();
     const { isLoading, mutate: verify } = useMutation({
-        mutationFn: (code) =>
-            verifyCode(code),
+        mutationFn: (data) =>
+            verifyCode(data),
         onSuccess: (data) => {
             removeCookieToken()
             setCookieToken(data.token);
 
-            //   queryClient.setQueryData(["user"], {
-            //     ...user,
-            //   });
             
-            navigate("/my/security");
+            navigate("/");
             toast.success("Successfully enabled 2FA")
         },
         onError: (err) => {
-            console.log(err);
+            console.log("err verify",err);
             toast.error(err.response.data.message);
         },
     });

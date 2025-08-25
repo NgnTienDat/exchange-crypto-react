@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Eye, EyeOff, QrCode } from 'lucide-react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import useLogin from '../../hooks/useLogin';
+import { useLocation, useNavigate } from 'react-router-dom';
+import useSignUp from '../../hooks/useSignUp';
 
 const CreatePassword = () => {
   const navigate = useNavigate();
@@ -9,15 +9,16 @@ const CreatePassword = () => {
   const email = location.state?.email || '';
   const [showPassword, setShowPassword] = useState(false);
   const [password, setPassword] = useState('');
+  const { isLoading, signUp } = useSignUp();
 
   const handleSubmit = () => {
-    const data = {
-      email: email,
-      password: password
-    }
+    // const data = {
+    //   email: email,
+    //   password: password
+    // }
 
-    console.log("data: ", data)
-    // navigate('/');
+    // console.log("data: ", data)
+    signUp({email, password})
   };
 
   return (
