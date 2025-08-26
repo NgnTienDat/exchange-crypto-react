@@ -1,40 +1,31 @@
 import React, { useState } from 'react';
 import {
-  Users,
-  Search,
-  Settings,
-  TrendingUp,
-  BarChart3,
-  FileText,
-  Lock,
-  Unlock,
-  Trash2,
-  Eye,
-  X,
-  ChevronDown,
-  Calendar,
-  DollarSign,
-  Activity,
-  BookOpen,
-  Filter
+  X
 } from 'lucide-react';
 import useUserAsset from '../../hooks/useUserAsset';
-import useUserOrder from '../../hooks/useUserOrder copy';
+import useUserOrder from '../../hooks/useUserOrder';
+import useUserOrderStats from '../../hooks/useUserOrderStats';
+import { Spinner } from '../Spinner';
+import useDeleteUser from '../../hooks/useDeleteUser';
 
 export const UserModal = ({ user, onClose, trades }) => {
   const [activeUserTab, setActiveUserTab] = useState('details');
-  const { isLoading, assets } = useUserAsset(user?.id)
+  const { isLoading, assets } = useUserAsset(user?.id);
+  
+  // Pass onClose to the hook so it can close the modal after successful deletion
+  const { isLoading: delLoading, delUser } = useDeleteUser(onClose);
+  
+  const { isLoading: statsLoading, stats } = useUserOrderStats(user?.id);
+  console.log("stats: ", stats);
+
   const [page, setPage] = useState(0);
   const size = 5;
 
-  const { isLoading: ordersLoading, orders } = useUserOrder(user?.id, page, size);
+  const { isLoading: ordersLoading, orders, isFetching } = useUserOrder(user?.id, page, size);
+  console.log("orders: ", orders);
 
-  if (ordersLoading) return <div>Loading...</div>;
+  const userOrders = (orders?.content || []);
 
-  // Extract the actual array from the orders object
-  const userOrders = Array.isArray(orders) ? orders : (orders?.content || []);
-  
-  // Pagination handlers
   const handlePrevious = () => {
     if (page > 0) {
       setPage(page - 1);
@@ -51,17 +42,21 @@ export const UserModal = ({ user, onClose, trades }) => {
   const hasPrevPage = page > 0;
   const totalPages = orders?.totalPages || 1;
 
-  console.log("userOrders: ", userOrders)
+  console.log("userOrders: ", userOrders);
 
-  // Handlers are defined here but would typically be passed down or use a state management library
-  const handleUserAction = (userId, action) => console.log(`${action} user ${userId}`);
+  const handleUserAction = (userId, action) => {
+    console.log(`${action} user ${userId}`);
+    if (action === 'delete') {
+      // Add confirmation before deleting
+      if (window.confirm(`Are you sure you want to delete user: ${user.email}?`)) {
+        delUser(userId); // This will automatically close the modal on success
+      }
+    }
+  };
+
   const handleCancelOrder = (orderId) => console.log(`Cancel order ${orderId}`);
 
-  // Get user's trades from props
-  const userTrades = trades ? trades.filter(trade => {
-    const relatedOrder = orders?.orders ? orders.orders.find(order => order.id === trade.orderId) : userOrders.find(order => order.id === trade.orderId);
-    return relatedOrder && relatedOrder.userId === user.id;
-  }) : [];
+  const filledOrders = userOrders.filter(order => order.status === 'FILLED');
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
@@ -88,13 +83,6 @@ export const UserModal = ({ user, onClose, trades }) => {
               ${activeUserTab === 'orders' ? 'border-b-2 border-blue-500 text-blue-600' : 'text-gray-500 hover:text-gray-700'}`}
           >
             Orders ({userOrders.length})
-          </button>
-          <button
-            onClick={() => setActiveUserTab('trades')}
-            className={`px-6 py-3 font-medium text-sm focus:outline-none 
-              ${activeUserTab === 'trades' ? 'border-b-2 border-blue-500 text-blue-600' : 'text-gray-500 hover:text-gray-700'}`}
-          >
-            Trades ({userTrades.length})
           </button>
         </div>
 
@@ -171,23 +159,23 @@ export const UserModal = ({ user, onClose, trades }) => {
               {/* Quick Stats */}
               <div className="border-t pt-4">
                 <h4 className="font-medium text-gray-900 mb-3">Quick Statistics</h4>
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                  <div className="bg-blue-50 p-4 rounded-lg">
-                    <p className="text-sm text-gray-600">Total Orders</p>
-                    <p className="text-2xl font-semibold text-blue-600">{userOrders.length}</p>
+                {statsLoading ? <Spinner size={18} className="text-blue-600" />
+                  :
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div className="bg-blue-50 p-4 rounded-lg">
+                      <p className="text-sm text-gray-600">Total Orders</p>
+                      <p className="text-2xl font-semibold text-blue-600">{stats.totalOrder || 0}</p>
+                    </div>
+                    <div className="bg-green-50 p-4 rounded-lg">
+                      <p className="text-sm text-gray-600">Completed Trades</p>
+                      <p className="text-2xl font-semibold text-green-600">{stats.completeTrades || 0}</p>
+                    </div>
+                    <div className="bg-purple-50 p-4 rounded-lg">
+                      <p className="text-sm text-gray-600">Active Orders</p>
+                      <p className="text-2xl font-semibold text-purple-600">{stats.activeOrder || 0}</p>
+                    </div>
                   </div>
-                  <div className="bg-green-50 p-4 rounded-lg">
-                    <p className="text-sm text-gray-600">Completed Trades</p>
-                    <p className="text-2xl font-semibold text-green-600">{userTrades.length}</p>
-                  </div>
-                  <div className="bg-purple-50 p-4 rounded-lg">
-                    <p className="text-sm text-gray-600">Active Orders</p>
-                    <p className="text-2xl font-semibold text-purple-600">
-                      {userOrders.filter(order => order.status === 'PENDING').length}
-
-                    </p>
-                  </div>
-                </div>
+                }
               </div>
 
               {/* Action Buttons */}
@@ -206,9 +194,14 @@ export const UserModal = ({ user, onClose, trades }) => {
                 </button>
                 <button
                   onClick={() => handleUserAction(user.id, 'delete')}
-                  className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg text-sm font-medium"
+                  disabled={delLoading}
+                  className={`px-4 py-2 rounded-lg text-sm font-medium ${
+                    delLoading 
+                      ? 'bg-gray-400 cursor-not-allowed text-white' 
+                      : 'bg-red-600 hover:bg-red-700 text-white'
+                  }`}
                 >
-                  Delete User
+                  {delLoading ? 'Deleting...' : 'Delete User'}
                 </button>
               </div>
             </div>
@@ -226,22 +219,20 @@ export const UserModal = ({ user, onClose, trades }) => {
                     <button
                       onClick={handlePrevious}
                       disabled={!hasPrevPage}
-                      className={`px-3 py-1 text-sm rounded ${
-                        hasPrevPage 
-                          ? 'bg-blue-600 hover:bg-blue-700 text-white' 
-                          : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                      }`}
+                      className={`px-3 py-1 text-sm rounded ${hasPrevPage
+                        ? 'bg-blue-600 hover:bg-blue-700 text-white'
+                        : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                        }`}
                     >
                       Previous
                     </button>
                     <button
                       onClick={handleNext}
                       disabled={!hasNextPage}
-                      className={`px-3 py-1 text-sm rounded ${
-                        hasNextPage 
-                          ? 'bg-blue-600 hover:bg-blue-700 text-white' 
-                          : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                      }`}
+                      className={`px-3 py-1 text-sm rounded ${hasNextPage
+                        ? 'bg-blue-600 hover:bg-blue-700 text-white'
+                        : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                        }`}
                     >
                       Next
                     </button>
@@ -252,6 +243,11 @@ export const UserModal = ({ user, onClose, trades }) => {
                 <p className="text-gray-500 text-center py-8">No orders found for this user</p>
               ) : (
                 <div className="overflow-x-auto">
+                  {isFetching && (
+                    <div className="text-xs text-gray-500 mb-2">
+                      Loading...
+                    </div>
+                  )}
                   <table className="min-w-full divide-y divide-gray-200">
                     <thead className="bg-gray-50">
                       <tr>
@@ -281,10 +277,10 @@ export const UserModal = ({ user, onClose, trades }) => {
                           <td className="px-4 py-3 text-sm text-gray-900">{order.quantity}</td>
                           <td className="px-4 py-3 text-sm">
                             <span className={`px-2 py-1 rounded-full text-xs font-medium ${order.status === 'FILLED'
-                                ? 'bg-green-100 text-green-800'
-                                : order.status === 'PENDING'
-                                  ? 'bg-yellow-100 text-yellow-800'
-                                  : 'bg-red-100 text-red-800'
+                              ? 'bg-green-100 text-green-800'
+                              : order.status === 'PENDING'
+                                ? 'bg-yellow-100 text-yellow-800'
+                                : 'bg-red-100 text-red-800'
                               }`}>
                               {order.status}
                             </span>
@@ -300,45 +296,6 @@ export const UserModal = ({ user, onClose, trades }) => {
                               </button>
                             )}
                           </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              )}
-            </div>
-          )}
-
-          {activeUserTab === 'trades' && (
-            <div>
-              {/* Trades Table */}
-              <h4 className="font-medium text-gray-900 mb-4">User Trades</h4>
-              {userTrades.length === 0 ? (
-                <p className="text-gray-500 text-center py-8">No trades found for this user</p>
-              ) : (
-                <div className="overflow-x-auto">
-                  <table className="min-w-full divide-y divide-gray-200">
-                    <thead className="bg-gray-50">
-                      <tr>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Trade ID</th>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Order ID</th>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Pair</th>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Price</th>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Amount</th>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Fee</th>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
-                      </tr>
-                    </thead>
-                    <tbody className="bg-white divide-y divide-gray-200">
-                      {userTrades.map((trade) => (
-                        <tr key={trade.id} className="hover:bg-gray-50">
-                          <td className="px-4 py-3 text-sm font-medium text-gray-900">{trade.id}</td>
-                          <td className="px-4 py-3 text-sm text-blue-600 hover:text-blue-900 cursor-pointer">{trade.orderId}</td>
-                          <td className="px-4 py-3 text-sm text-gray-900">{trade.pair}</td>
-                          <td className="px-4 py-3 text-sm text-gray-900">${trade.price.toLocaleString()}</td>
-                          <td className="px-4 py-3 text-sm text-gray-900">{trade.amount}</td>
-                          <td className="px-4 py-3 text-sm text-gray-900">${trade.fee}</td>
-                          <td className="px-4 py-3 text-sm text-gray-500">{trade.date}</td>
                         </tr>
                       ))}
                     </tbody>

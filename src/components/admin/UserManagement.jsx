@@ -8,6 +8,9 @@ import {
 } from 'lucide-react';
 import { UserModal } from './UserModal';
 import useUsers from '../../hooks/useUsers';
+import useDeleteUser from '../../hooks/useDeleteUser';
+import useUpdateUser from '../../hooks/useUpdateUser';
+import { Spinner } from '../Spinner';
 
 export const UserManagement = ({ orders, trades }) => {
     const [searchTerm, setSearchTerm] = useState('');
@@ -18,11 +21,41 @@ export const UserManagement = ({ orders, trades }) => {
     const size = 3;
     const { isLoading, users, pagination } = useUsers(page, size);
 
+    const { isLoading: delLoading, delUser } = useDeleteUser();
+    const {
+        isLoading: lockLoading,
+        lockUserAccount,
+    } = useUpdateUser();
+
     const handleUserAction = (userId, action) => {
         console.log(`${action} user ${userId}`);
-        // Implementation API call sẽ để sau
-    };
 
+        const targetUser = users.find(user => user.id === userId);
+        if (!targetUser) return;
+
+        switch (action) {
+            case 'delete':
+                if (window.confirm(`Are you sure you want to delete user: ${targetUser.email}?`)) {
+                    delUser(userId);
+                }
+                break;
+
+            case 'lock':
+            case 'unlock':
+                const confirmMessage = `Are you sure you want to ${action} account for: ${targetUser.email}?`;
+                if (window.confirm(confirmMessage)) {
+                    const data = {
+                        userId: userId,
+                        active: !targetUser.active
+                    }
+                    lockUserAccount(data);
+                }
+                break;
+
+            default:
+                console.log(`Unknown action: ${action}`);
+        }
+    };
     const openModal = (user) => {
         setSelectedUser(user);
         setShowUserModal(true);
@@ -41,6 +74,9 @@ export const UserManagement = ({ orders, trades }) => {
         user.email.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
+    // Check if any operation is in progress
+    const isOperationInProgress = delLoading || lockLoading;
+
     return (
         <div className="space-y-6">
             <div className="flex flex-col md:flex-row justify-between md:items-center gap-4">
@@ -55,7 +91,8 @@ export const UserManagement = ({ orders, trades }) => {
                         placeholder="Search users..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
-                        className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full md:w-auto"
+                        className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg  text-gray-700
+                        focus:outline-none focus:ring-2 focus:ring-blue-500 w-full md:w-auto"
                     />
                 </div>
             </div>
@@ -92,10 +129,10 @@ export const UserManagement = ({ orders, trades }) => {
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap">
                                     <div className="text-sm font-medium text-gray-900">
-                                        {/* ${user.totalUsdValue.toLocaleString()} */}1000
+                                        1000
                                     </div>
                                     <div className="text-xs text-gray-500">
-                                        {/* {user.balances.length} assets */} BTC
+                                        BTC
                                     </div>
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap">
@@ -122,22 +159,15 @@ export const UserManagement = ({ orders, trades }) => {
                                     </div>
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap">
-                                    {/* <div className="flex flex-col space-y-1">
-                                        <span
-                                            className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${user.tfaEnabled===true                                             ? 'bg-green-100 text-green-800'
-                                                    : 'bg-red-100 text-red-800'
-                                                }`} 
-                                        >
-                                            {user.tfaEnabled&&'enable 2FA'}
-                                        </span>
-                                        
-                                    </div> */}
+                                    {/* Join date would go here */}
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                     <div className="flex space-x-2">
                                         <button
                                             onClick={() => openModal(user)}
                                             className="text-blue-600 hover:text-blue-900"
+                                            title="View Details"
+                                            disabled={isOperationInProgress}
                                         >
                                             <Eye size={16} />
                                         </button>
@@ -145,16 +175,22 @@ export const UserManagement = ({ orders, trades }) => {
                                             onClick={() =>
                                                 handleUserAction(
                                                     user.id,
-                                                    user.accountLocked ? 'unlock' : 'lock'
+                                                    user.active ? 'lock' : 'unlock'
                                                 )
                                             }
-                                            className="text-yellow-600 hover:text-yellow-900"
+                                            className={`text-yellow-600 hover:text-yellow-900 ${isOperationInProgress ? 'opacity-50 cursor-not-allowed' : ''
+                                                }`}
+                                            title={user.active ? 'Lock User' : 'Unlock User'}
+                                            disabled={isOperationInProgress}
                                         >
-                                            {user.accountLocked ? <Unlock size={16} /> : <Lock size={16} />}
+                                            {user.active ? <Lock size={16} /> : <Unlock size={16} />}
                                         </button>
                                         <button
                                             onClick={() => handleUserAction(user.id, 'delete')}
-                                            className="text-red-600 hover:text-red-900"
+                                            className={`text-red-600 hover:text-red-900 ${isOperationInProgress ? 'opacity-50 cursor-not-allowed' : ''
+                                                }`}
+                                            disabled={isOperationInProgress}
+                                            title="Delete User"
                                         >
                                             <Trash2 size={16} />
                                         </button>
@@ -166,10 +202,18 @@ export const UserManagement = ({ orders, trades }) => {
                 </table>
             </div>
 
+            {/* Show loading state */}
+            {isOperationInProgress && (
+                <div className="text-center text-gray-600">
+                    {delLoading && <Spinner />}
+                    {lockLoading && <Spinner />}
+                </div>
+            )}
+
             {/* Pagination controls */}
             <div className="flex space-x-5 justify-center items-center">
                 <button
-                    disabled={page === 0}
+                    disabled={page === 0 || isOperationInProgress}
                     onClick={() => setPage((p) => p - 1)}
                     className="px-3 py-1 rounded disabled:opacity-50 text-gray-600 cursor-pointer hover:bg-gray-300"
                 >
@@ -179,7 +223,7 @@ export const UserManagement = ({ orders, trades }) => {
                     Page {pagination.page + 1} / {pagination.totalPages}
                 </span>
                 <button
-                    disabled={page >= pagination.totalPages - 1}
+                    disabled={page >= pagination.totalPages - 1 || isOperationInProgress}
                     onClick={() => setPage((p) => p + 1)}
                     className="px-3 py-1 rounded disabled:opacity-50 text-gray-600 cursor-pointer hover:bg-gray-300"
                 >

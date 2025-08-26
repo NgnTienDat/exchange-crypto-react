@@ -67,16 +67,6 @@ export async function getCurrentUser() {
   return data?.result || null
 }
 
-// export async function getAllUsers() {
-//   const res = await AUTH_REQUEST.get(endpoints.allUsers);
-
-//   if (res.status != 200) throw new Error("Error currentUser");
-
-//   const data = res.data;
-//   // console.log("All users: ", data)
-
-//   return data?.result || null
-// }
 
 
 export async function getAllUsers(page = 0, size = 10) {
@@ -86,5 +76,41 @@ export async function getAllUsers(page = 0, size = 10) {
 
   const data = res.data;
   return data?.result || null; 
-  // result : content, page, size, totalElements, totalPages
 }
+
+
+export async function deleteUser(userId) {
+  const res = await AUTH_REQUEST.delete(endpoints.user(userId));
+  // console.log("Current: ", res.data)
+
+
+  if (res.status != 200) throw new Error("Error delete user");
+
+  const data = res.data;
+  // console.log("Current user: ", data)
+
+  return data?.result || null
+}
+
+
+export async function lockUser(updateData) {
+  const res = await AUTH_REQUEST.patch(endpoints.userLocked, 
+    updateData
+  );
+
+  if (res.status != 200) throw new Error("Error lock user");
+
+  const data = res.data;
+
+  return data?.result || null
+}
+
+// export async function unlockUser(userId) {
+//   const res = await AUTH_REQUEST.patch(endpoints.userUnlocked(userId));
+
+//   if (res.status != 200) throw new Error("Error unlock user");
+
+//   const data = res.data;
+
+//   return data?.result || null
+// }

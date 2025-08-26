@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import useUser from "../../hooks/useUser";
 import useLogout from "../../hooks/useLogout";
 
+
 export default function Navbar() {
   const { user, isLoading } = useUser();
   const { logout } = useLogout();
@@ -32,6 +33,7 @@ export default function Navbar() {
             <div className="text-yellow-500 font-bold text-lg flex items-center">
               <Link to="/admin/dashboard" className="text-yellow-400 text-2xl font-bold">CryptoCoin
               <span className="text-blue-500 text-[18px] font-semibold">{" "}- ADMIN</span></Link>
+              <Link to="/crypto/buy" className="hover:text-yellow-500">Buy Crypto</Link>
             </div>
          
           </>

@@ -1,31 +1,25 @@
 import React, { useState } from 'react';
 import {
-  Users,
   Search,
-  Settings,
-  TrendingUp,
-  BarChart3,
-  FileText,
-  Lock,
-  Unlock,
-  Trash2,
-  Eye,
-  X,
-  ChevronDown,
-  Calendar,
-  DollarSign,
-  Activity,
-  BookOpen,
   Filter
 } from 'lucide-react';
+import useOrders from '../../hooks/useOrders';
 
 
 export const OrderManagement = () => {
-  const orders = [
-    { id: 'ORD001', userId: 1, pair: 'BTC/USDT', side: 'buy', type: 'limit', price: 45000, amount: 0.5, status: 'filled', date: '2024-08-25' },
-    { id: 'ORD002', userId: 2, pair: 'ETH/USDT', side: 'sell', type: 'market', price: 2800, amount: 2.0, status: 'pending', date: '2024-08-25' },
-    { id: 'ORD003', userId: 1, pair: 'BTC/USDT', side: 'sell', type: 'limit', price: 46000, amount: 0.3, status: 'cancelled', date: '2024-08-24' }
-  ];
+  const [searchTerm, setSearchTerm] = useState('');
+  const [page, setPage] = useState(0);
+  const size = 3;
+  const { allOrdersLoading, orders, pagination } = useOrders(page, size);
+
+  // const orders = [
+  //   { id: 'ORD001', userId: 1, pair: 'BTC/USDT', side: 'buy', type: 'limit', price: 45000, amount: 0.5, status: 'filled', date: '2024-08-25' },
+  //   { id: 'ORD022', userId: 2, pair: 'ETH/USDT', side: 'sell', type: 'market', price: 2800, amount: 2.0, status: 'pending', date: '2024-08-25' },
+  //   { id: 'ORD023', userId: 1, pair: 'BTC/USDT', side: 'sell', type: 'limit', price: 46000, amount: 0.3, status: 'cancelled', date: '2024-08-24' }
+  // ];
+
+  console.log("orders: ", orders)
+
   const orderBook = [
     { price: 45100, amount: 1.2, side: 'sell' },
     { price: 45050, amount: 0.8, side: 'sell' },
@@ -38,7 +32,20 @@ export const OrderManagement = () => {
   const handleCancelOrder = (orderId) => {
     console.log(`Cancel order ${orderId}`);
     // Implementation would go here
+
+
   };
+
+
+
+  const filteredOrders = orders.filter((order) =>
+    order.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    order.userId.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    order.pairId.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const isOperationInProgress = allOrdersLoading;
+
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
@@ -48,8 +55,11 @@ export const OrderManagement = () => {
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
             <input
               type="text"
-              placeholder="Search by Order ID or Pair..."
-              className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="Enter order ID or pair..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg text-gray-700
+               focus:outline-none focus:ring-2 focus:ring-blue-300"
             />
           </div>
           <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center">
@@ -73,7 +83,7 @@ export const OrderManagement = () => {
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
-            {orders.map((order) => (
+            {filteredOrders.map((order) => (
               <tr key={order.id} className="hover:bg-gray-50">
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                   {order.id}
@@ -82,27 +92,28 @@ export const OrderManagement = () => {
                   {order.userId}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                  {order.pair}
+                  {order.pairId}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="text-sm text-gray-900">
-                    <span className={`px-2 py-1 rounded text-xs ${order.side === 'buy' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                    <span className={`px-2 py-1 rounded text-xs ${order.side === 'BID' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
                       }`}>
-                      {order.side}
+                      {order.side === 'BID'?'buy':'sell'}
                     </span>
                     <span className="ml-2 text-gray-500">{order.type}</span>
                   </div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                   <div>${order.price.toLocaleString()}</div>
-                  <div className="text-gray-500">{order.amount}</div>
+                  <div className="text-gray-500">{order.quantity}</div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${order.status === 'filled' ? 'bg-green-100 text-green-800' :
-                    order.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
-                      'bg-red-100 text-red-800'
+                  <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full
+                  ${order.status.toLowerCase() === 'filled' ? 'bg-green-100 text-green-800' :
+                      order.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
+                        'bg-red-100 text-red-800'
                     }`}>
-                    {order.status}
+                    {order.status.toLowerCase()}
                   </span>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
@@ -119,6 +130,26 @@ export const OrderManagement = () => {
             ))}
           </tbody>
         </table>
+      </div>
+      {/* Pagination controls */}
+      <div className="flex space-x-5 justify-center items-center">
+        <button
+          disabled={page === 0 || isOperationInProgress}
+          onClick={() => setPage((p) => p - 1)}
+          className="px-3 py-1 rounded disabled:opacity-50 text-gray-600 cursor-pointer hover:bg-gray-300"
+        >
+          Previous
+        </button>
+        <span className="text-sm text-gray-600">
+          Page {pagination.page + 1} / {pagination.totalPages}
+        </span>
+        <button
+          disabled={page >= pagination.totalPages - 1 || isOperationInProgress}
+          onClick={() => setPage((p) => p + 1)}
+          className="px-3 py-1 rounded disabled:opacity-50 text-gray-600 cursor-pointer hover:bg-gray-300"
+        >
+          Next
+        </button>
       </div>
 
       {/* Order Book */}
@@ -149,6 +180,7 @@ export const OrderManagement = () => {
           </div>
         </div>
       </div>
+
     </div>
   );
 }

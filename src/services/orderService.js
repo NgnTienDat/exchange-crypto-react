@@ -40,9 +40,6 @@ export async function getOpenOrdersByPairId(pairId) {
 
   const data = res.data;
 
-  // console.log("open service: ", data.result)
-  
-
   return data?.result || null
 }
 
@@ -52,8 +49,6 @@ export async function getOrderHistoryByPairId(pairId) {
   if (res.status != 200) throw new Error("Error order");
 
   const data = res.data;
-  // console.log("history: ", data.result)
-  
 
   return data?.result || null
 }
@@ -64,10 +59,22 @@ export async function getAllOrders() {
   if (res.status != 200) throw new Error("Error order");
 
   const data = res.data;
-  console.log("all my orders: ", data.result)
   
 
   return data?.result || null
+}
+
+
+export async function getAllOrdersByAdmin(page = 0, size = 10) {
+  const res = await AUTH_REQUEST.get(endpoints.allOrders, {
+    params: { page, size },
+  });
+
+  if (res.status !== 200) throw new Error("Error get all orders");
+
+  const data = res.data;
+
+  return data?.result || null;
 }
 
 
@@ -79,7 +86,17 @@ export async function getUserOrders(userId, page = 0, size = 10) {
   if (res.status !== 200) throw new Error("Error order");
 
   const data = res.data;
-  console.log("user's orders: ", data.result);
+
+  return data?.result || null;
+}
+
+
+export async function getUserOrderStats(userId) {
+  const res = await AUTH_REQUEST.get(endpoints.orderStats(userId));
+
+  if (res.status !== 200) throw new Error("Error stats");
+
+  const data = res.data;
 
   return data?.result || null;
 }
