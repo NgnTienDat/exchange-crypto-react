@@ -6,25 +6,21 @@ import useOrder from "../../hooks/useOrder";
 const OrderForm = ({ pair }) => {
   const [tab, setTab] = useState("limit");
   const [side, setSide] = useState("buy");
+  const tabs = ["Limit", "Market", "Stop Limit"];
   const [amount, setAmount] = useState("");
   const [error, setError] = useState("");
   const [price, setPrice] = useState("");
   const [isLockOrder, setLockOrder] = useState(true);
-  const { placeNewOrder } = useOrder(pair)
   
-
-  const tabs = ["Limit", "Market", "Stop Limit"];
-  const { assets } = useMyAsset();
-
-
-
-
+  const { placeNewOrder } = useOrder(pair)
+  const { assets: rawAssets } = useMyAsset();
   const data = useMarketData(pair.replace('-', ''));
+  
+  const assets = rawAssets ?? [];
   if (!data) return null;
 
   const { price: bestPrice } = data;
 
-  if (!assets) return <div>Loading...</div>;
 
   const [baseSymbol, quoteSymbol] = pair.split('-');
 

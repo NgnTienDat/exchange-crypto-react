@@ -13,12 +13,14 @@ export const endpoints = {
   verifyCode: "/auth/2fa/verify-code",
   myAssets: "/api/assets/my",
   postOrder: "/api/orders/",
-  allOrders: "/api/orders/history",
+  allMyOrders: "/api/orders/",
+  userAssets: (userId) => `/api/assets/${userId}`,
   productDetail: (productId) => `/api/trade/${productId}`,
   unsubscribeProduct: (productId) => `/api/trade/unsubscribe/${productId}`,
   myOrders: (productId) => `/api/orders/${productId}`,
   openOrders: (productId) => `/api/orders/open/${productId}`,
   orderHistory: (productId) => `/api/orders/history/${productId}`,
+  userOrders: (userId) => `/api/orders/user/${userId}`,
 }
 
 export const PRODUCT_IDS = ['BTCUSDT', 'ETHUSDT', 'ADAUSDT', 'DOTUSDT', 'BNBUSDT', 'SOLUSDT']

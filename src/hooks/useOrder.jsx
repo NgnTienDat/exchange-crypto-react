@@ -1,9 +1,11 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { getOpenOrdersByPairId, getOrderHistoryByPairId, getOrdersByPairId, placeOrder } from "../services/orderService";
+import useUser from "./useUser";
 
 function useOrder(pairId) {
   const queryClient = useQueryClient();
+  const {user} = useUser()
 
   const { isLoading, mutate: placeNewOrder } = useMutation({
     mutationFn: (order) =>
@@ -26,21 +28,26 @@ function useOrder(pairId) {
     }
   });
 
-  const { data: openOrders} = useQuery({
+  const { data: openOrders } = useQuery({
     queryKey: ["orders", "open", pairId],
     queryFn: () => getOpenOrdersByPairId(pairId),
     retry: 1,
-    enabled: !!pairId,
-    placeholderData: null,
+    enabled: !!user && !!pairId ,
+    placeholderData: [],
+    initialData: [],
   });
 
-  const { data: orderHistory} = useQuery({
+  const { data: orderHistory } = useQuery({
     queryKey: ["orders", "history", pairId],
     queryFn: () => getOrderHistoryByPairId(pairId),
     retry: 1,
-    enabled: !!pairId,
-    placeholderData: null,
+    enabled: !!user && !!pairId,
+    placeholderData: [],
+    initialData: [],
   });
+
+
+
 
 
   // console.log("open: ", openOrders)

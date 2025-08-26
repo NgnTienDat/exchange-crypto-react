@@ -30,10 +30,10 @@ export default function Navbar() {
         ) : (
           <>
             <div className="text-yellow-500 font-bold text-lg flex items-center">
-              <span className="text-yellow-400 text-2xl font-bold">CryptoCoin</span>
+              <Link to="/admin/dashboard" className="text-yellow-400 text-2xl font-bold">CryptoCoin
+              <span className="text-blue-500 text-[18px] font-semibold">{" "}- ADMIN</span></Link>
             </div>
-            <span className="hover:text-yellow-500">ADMIN</span>
-            <Link to="/crypto/buy" className="hover:text-yellow-500">Buy Crypto</Link>
+         
           </>
         )}
 

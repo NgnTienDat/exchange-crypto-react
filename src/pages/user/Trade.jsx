@@ -15,34 +15,26 @@ import useUser from '../../hooks/useUser';
 const Trade = () => {
   const { productId } = useParams();
   const pairId = productId.replace('-', '')
-  const { user } = useUser();
-
-  const [orderType, setOrderType] = useState('limit');
-  const [buyAmount, setBuyAmount] = useState('');
   const [activeView, setActiveView] = useState("orderbook");
-  const [sellAmount, setSellAmount] = useState('');
-  const [buyPrice, setBuyPrice] = useState('118108.86');
-  const [sellPrice, setSellPrice] = useState('118108.86');
-
   const { openTradeDetail, closeTradeDetail } = useTrade();
+  const { user } = useUser();
   useNotification(user?.id);
-  // const renderCount = React.useRef(0);
-  // renderCount.current += 1;
-  // console.log("render count:", renderCount.current);
-
 
 
   useEffect(() => {
+    if (!user) return;
 
-    getOpenOrdersByPairId(productId)
-    getOrderHistoryByPairId(productId)
+    getOpenOrdersByPairId(productId);
+    getOrderHistoryByPairId(productId);
+
+  }, [user, productId]);
+
+  useEffect(() => {
 
     if (productId) {
       openTradeDetail(pairId);
     }
-  }, [pairId]); 
 
-  useEffect(() => {
     const handleBeforeUnload = () => {
       closeTradeDetail(pairId);
     };
@@ -80,8 +72,6 @@ const Trade = () => {
 
           {activeView === "orderbook" ? (
             <Orderbook
-              // sellOrders={sellOrders}
-              // buyOrders={buyOrders}
               productId={pairId}
             />
           ) : (
@@ -100,16 +90,6 @@ const Trade = () => {
 
           <OrderForm
             pair={productId}
-            orderType={orderType}
-            setOrderType={setOrderType}
-            buyAmount={buyAmount}
-            setBuyAmount={setBuyAmount}
-            sellAmount={sellAmount}
-            setSellAmount={setSellAmount}
-            buyPrice={buyPrice}
-            setBuyPrice={setBuyPrice}
-            sellPrice={sellPrice}
-            setSellPrice={setSellPrice}
           />
 
           <MyBalance />

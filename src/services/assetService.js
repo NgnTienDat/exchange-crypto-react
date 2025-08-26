@@ -14,3 +14,15 @@ export async function getMyAssets() {
 
   return data?.result || null
 }
+
+
+export async function getUserAssets(userId) {
+  const res = await AUTH_REQUEST.get(endpoints.userAssets(userId));
+
+  if (res.status != 200) throw new Error("Error user assets");
+
+  const data = res.data;
+  // console.log("My assets: ", data)
+
+  return data?.result || null
+}
