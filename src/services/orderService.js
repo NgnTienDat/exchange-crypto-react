@@ -58,14 +58,28 @@ export async function getOrderHistoryByPairId(pairId) {
   return data?.result || null
 }
 
-export async function getAllOrder() {
-  const res = await AUTH_REQUEST.get(endpoints.allOrders);
+export async function getAllOrders() {
+  const res = await AUTH_REQUEST.get(endpoints.allMyOrders);
 
   if (res.status != 200) throw new Error("Error order");
 
   const data = res.data;
-  console.log("history: ", data.result)
+  console.log("all my orders: ", data.result)
   
 
   return data?.result || null
+}
+
+
+export async function getUserOrders(userId, page = 0, size = 10) {
+  const res = await AUTH_REQUEST.get(endpoints.userOrders(userId), {
+    params: { page, size },
+  });
+
+  if (res.status !== 200) throw new Error("Error order");
+
+  const data = res.data;
+  console.log("user's orders: ", data.result);
+
+  return data?.result || null;
 }

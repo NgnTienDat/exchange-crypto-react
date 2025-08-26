@@ -6,7 +6,7 @@ import { assetConfig } from '../../utils/helper';
 const MyBalance = () => {
     const { assets } = useMyAsset();
 
-    if (!assets) return <div>Loading...</div>;
+    if (!assets) return <div className='text-gray-400'>Log in to check assets</div>;
 
 
     // Process assets data

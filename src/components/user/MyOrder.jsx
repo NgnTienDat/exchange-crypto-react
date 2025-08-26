@@ -15,15 +15,16 @@ const MyOrder = ({ pair }) => {
   const getCurrentOrders = () => {
     switch (activeTab) {
       case "open":
-        return openOrders;
+        return openOrders ?? [];
       case "history":
-        return orderHistory;
+        return orderHistory ?? [];
       default:
         return [];
     }
   };
 
   const currentOrders = getCurrentOrders();
+
 
   return (
     <div className="bg-white rounded-md border shadow-sm h-screen">
@@ -44,7 +45,7 @@ const MyOrder = ({ pair }) => {
                 <span className="ml-1 text-xs bg-gray-300 text-gray-800 px-1.5 rounded">
                   {openOrders.length}
                 </span>
-               
+
               }
             </button>
           ))}
