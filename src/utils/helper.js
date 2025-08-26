@@ -8,12 +8,14 @@ export const endpoints = {
   info: "/api/users/my-info",
   createUser: "/api/users/",
   allUsers: "/api/users/",
+  userLocked: "/api/users/lock",
   refresh: "/auth/refresh",
   enable2fa: "/auth/2fa/setup",
   verifyCode: "/auth/2fa/verify-code",
   myAssets: "/api/assets/my",
   postOrder: "/api/orders/",
   allMyOrders: "/api/orders/",
+  allOrders: "/api/orders/all",
   userAssets: (userId) => `/api/assets/${userId}`,
   productDetail: (productId) => `/api/trade/${productId}`,
   unsubscribeProduct: (productId) => `/api/trade/unsubscribe/${productId}`,
@@ -21,6 +23,8 @@ export const endpoints = {
   openOrders: (productId) => `/api/orders/open/${productId}`,
   orderHistory: (productId) => `/api/orders/history/${productId}`,
   userOrders: (userId) => `/api/orders/user/${userId}`,
+  orderStats: (userId) => `/api/orders/stats/${userId}`,
+  user: (userId) => `/api/users/${userId}`,
 }
 
 export const PRODUCT_IDS = ['BTCUSDT', 'ETHUSDT', 'ADAUSDT', 'DOTUSDT', 'BNBUSDT', 'SOLUSDT']
