@@ -6,7 +6,7 @@ function useUsers(page = 0, size = 10) {
   const { isLoading, data, error } = useQuery({
     queryKey: ["users", page, size],
     queryFn: () => getAllUsers(page, size),
-    retry: 2,
+    retry: 1,
     enabled: !!getAccessToken(),
   });
 

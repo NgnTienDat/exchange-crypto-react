@@ -4,7 +4,15 @@ import useOrder from "../../hooks/useOrder";
 
 
 const MyOrder = ({ pair }) => {
-  const { openOrders, orderHistory } = useOrder(pair);
+  const [openPage, setOpenPage] = useState(0);
+  const [historyPage, setHistoryPage] = useState(0);
+  
+  const {
+    openOrders, orderHistory,
+    historyPagination, openPagination,
+    openLoading, historyLoading
+  } = useOrder(pair, openPage, historyPage, 7);
+
   const [activeTab, setActiveTab] = useState("open");
   const tabs = [
     { key: "open", label: "Open orders" },
@@ -24,10 +32,10 @@ const MyOrder = ({ pair }) => {
   };
 
   const currentOrders = getCurrentOrders();
-
+  const isOperationInProgress = historyLoading || openLoading;
 
   return (
-    <div className="bg-white rounded-md border shadow-sm h-screen">
+    <div className="bg-white rounded-md border shadow-sm h-[51vh]">
       {/* Tabs */}
       <div className="flex items-center justify-between rounded-md border-b px-4 py-2 bg-gray-50">
         <div className="flex space-x-1">
@@ -117,25 +125,70 @@ const MyOrder = ({ pair }) => {
                       <span className="text-gray-500">BTC</span>
                     </div>
                   </td>
-                  <td className="px-4 py-2">
-                    {activeTab === "open" && (
-                      <button
-                        onClick={() => console.log("Cancel order", order.id)}
-                        className="text-blue-500 hover:underline text-sm"
-                      >
-                        Cancel
-                      </button>
-                    )}
+                  {activeTab === 'history' ?
+                    <td className="px-4 py-2 text-left">{order.status}</td>
+                    :
+                    <td className="px-4 py-2">
+                      {activeTab === "open" && (
+                        <button
+                          onClick={() => console.log("Cancel order", order.id)}
+                          className="text-blue-500 hover:underline text-sm"
+                        >
+                          Cancel
+                        </button>
+                      )}
+                    </td>
+                  }
 
-                    {activeTab === 'history' &&
-                      <td className="px-4 py-2 text-left">{order.status}</td>
-                    }
-                  </td>
                 </tr>
               ))
             )}
           </tbody>
         </table>
+        {/* Pagination controls */}
+
+        {activeTab === 'history' ?
+          <div className="flex my-3 space-x-5 justify-center items-center">
+            <button
+              disabled={historyPage === 0 || isOperationInProgress}
+              onClick={() => setHistoryPage((p) => p - 1)}
+              className="px-3 py-1 rounded disabled:opacity-50 text-gray-600 cursor-pointer hover:bg-gray-300"
+            >
+              Previous
+            </button>
+            <span className="text-sm text-gray-600">
+              Page {historyPagination.page + 1}
+            </span>
+            <button
+              disabled={!historyPagination.hasNext || isOperationInProgress}
+              onClick={() => setHistoryPage((p) => p + 1)}
+              className="px-3 py-1 rounded disabled:opacity-50 text-gray-600 cursor-pointer hover:bg-gray-300"
+            >
+              Next
+            </button>
+          </div>
+          :
+          <div className="flex my-3 space-x-5 justify-center items-center">
+            <button
+              disabled={openPage === 0 || isOperationInProgress}
+              onClick={() => setOpenPage((p) => p - 1)}
+              className="px-3 py-1 rounded disabled:opacity-50 text-gray-600 cursor-pointer hover:bg-gray-300"
+            >
+              Previous
+            </button>
+            <span className="text-sm text-gray-600">
+              Page {openPagination.page + 1}
+            </span>
+            <button
+              disabled={!openPagination.hasNext || isOperationInProgress}
+              onClick={() => setOpenPage((p) => p + 1)}
+              className="px-3 py-1 rounded disabled:opacity-50 text-gray-600 cursor-pointer hover:bg-gray-300"
+            >
+              Next
+            </button>
+          </div>
+        }
+
       </div>
     </div>
   );

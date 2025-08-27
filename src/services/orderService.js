@@ -1,4 +1,4 @@
-import {AUTH_REQUEST } from "../utils/axiosConfigs";
+import { AUTH_REQUEST } from "../utils/axiosConfigs";
 import { endpoints } from "../utils/helper";
 
 
@@ -7,11 +7,11 @@ export async function placeOrder(order) {
   const res = await AUTH_REQUEST.post(endpoints.postOrder, {
     getCryptoId: order.getCryptoId,
     giveCryptoId: order.giveCryptoId,
-    side:  order.side,
-    price:  order.price,
-    quantity:  order.quantity,
-    timeInForce:  order.timeInForce,
-    orderType:  order.orderType
+    side: order.side,
+    price: order.price,
+    quantity: order.quantity,
+    timeInForce: order.timeInForce,
+    orderType: order.orderType
   });
 
   if (res.status !== 201) throw new Error(res.response.data);
@@ -28,13 +28,15 @@ export async function getOrdersByPairId(pairId) {
   if (res.status != 200) throw new Error("Error currentUser");
 
   const data = res.data;
-  
+
 
   return data?.result || null
 }
 
-export async function getOpenOrdersByPairId(pairId) {
-  const res = await AUTH_REQUEST.get(endpoints.openOrders(pairId));
+export async function getOpenOrdersByPairId(pairId, page = 0, size = 10) {
+  const res = await AUTH_REQUEST.get(endpoints.openOrders(pairId), {
+    params: { page, size },
+  });
 
   if (res.status != 200) throw new Error("Error order");
 
@@ -43,8 +45,10 @@ export async function getOpenOrdersByPairId(pairId) {
   return data?.result || null
 }
 
-export async function getOrderHistoryByPairId(pairId) {
-  const res = await AUTH_REQUEST.get(endpoints.orderHistory(pairId));
+export async function getOrderHistoryByPairId(pairId, page = 0, size = 7) {
+  const res = await AUTH_REQUEST.get(endpoints.orderHistory(pairId), {
+    params: { page, size },
+  });
 
   if (res.status != 200) throw new Error("Error order");
 
@@ -59,7 +63,7 @@ export async function getAllOrders() {
   if (res.status != 200) throw new Error("Error order");
 
   const data = res.data;
-  
+
 
   return data?.result || null
 }

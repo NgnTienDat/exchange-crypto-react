@@ -70,13 +70,13 @@ const Trade = () => {
             </button>
           </div>
 
-          {activeView === "orderbook" ? (
+          {/* {activeView === "orderbook" ? (
             <Orderbook
               productId={pairId}
             />
           ) : (
             <TradeSidebar productId={pairId} />
-          )}
+          )} */}
         </div>
 
         <div className="w-[54%] space-y-1">
