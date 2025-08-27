@@ -16,6 +16,7 @@ export const endpoints = {
   postOrder: "/api/orders/",
   allMyOrders: "/api/orders/",
   allOrders: "/api/orders/all",
+  allTrades: "/api/trades",
   userAssets: (userId) => `/api/assets/${userId}`,
   productDetail: (productId) => `/api/trade/${productId}`,
   unsubscribeProduct: (productId) => `/api/trade/unsubscribe/${productId}`,

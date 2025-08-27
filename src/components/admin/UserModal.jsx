@@ -265,11 +265,11 @@ export const UserModal = ({ user, onClose, trades }) => {
                     <tbody className="bg-white divide-y divide-gray-200">
                       {userOrders.map((order) => (
                         <tr key={order.id} className="hover:bg-gray-50">
-                          <td className="px-4 py-3 text-sm font-medium text-gray-900">{order.id}</td>
-                          <td className="px-4 py-3 text-sm text-gray-900">{order.pairId || '-'}</td>
+                          <td className="px-4 py-3 text-[12px] font-medium text-gray-900">{order.id}</td>
+                          <td className="px-4 py-3 text-[12px] text-gray-900">{order.pairId || '-'}</td>
                           <td className="px-4 py-3 text-sm">
                             <span className={`px-2 py-1 rounded text-xs font-medium ${order.side === 'BID' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
-                              {order.side}
+                              {order.side === 'BID'? 'Buy':'Sell'}
                             </span>
                           </td>
                           <td className="px-4 py-3 text-sm text-gray-500">{order.type}</td>

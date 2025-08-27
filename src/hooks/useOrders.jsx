@@ -1,15 +1,15 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import toast from "react-hot-toast";
 import { getAllOrdersByAdmin, getOpenOrdersByPairId, getOrderHistoryByPairId, getOrdersByPairId, placeOrder } from "../services/orderService";
-import useUser from "./useUser";
 import { getAccessToken } from "../utils/helper";
 
-function useOrders(page = 0, size = 10) {
+function useOrders(page = 0, size = 3) {
   const { isLoading: allOrdersLoading, data, error } = useQuery({
     queryKey: ["orders", page, size],
     queryFn: () => getAllOrdersByAdmin(page, size),
     retry: 1,
     enabled: !!getAccessToken(),
+    keepPreviousData: true,
+    staleTime: 30000, 
   });
 
   return {
@@ -23,8 +23,6 @@ function useOrders(page = 0, size = 10) {
     },
     error,
   };
-
-
 }
 
 export default useOrders;

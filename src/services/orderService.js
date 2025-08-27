@@ -69,7 +69,7 @@ export async function getAllOrders() {
 }
 
 
-export async function getAllOrdersByAdmin(page = 0, size = 10) {
+export async function getAllOrdersByAdmin(page = 0, size = 3) {
   const res = await AUTH_REQUEST.get(endpoints.allOrders, {
     params: { page, size },
   });
