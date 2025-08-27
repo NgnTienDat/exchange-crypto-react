@@ -1,60 +1,225 @@
+// import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+// import toast from "react-hot-toast";
+// import { getOpenOrdersByPairId, getOrderHistoryByPairId, getOrdersByPairId, placeOrder } from "../services/orderService";
+// import useUser from "./useUser";
+
+// function useOrder(pairId, page = 0, size = 10) {
+//   const queryClient = useQueryClient();
+//   const { user } = useUser()
+
+//   const { isLoading, mutate: placeNewOrder } = useMutation({
+//     mutationFn: (order) =>
+//       placeOrder(order),
+
+//     onSuccess: (newOrder) => {
+//       toast.success("Place order successful");
+
+//       queryClient.setQueryData(["orders", "open", pairId], (oldData) => {
+
+//         if (!oldData) return [newOrder];
+
+//         return [newOrder, ...oldData];
+//       });
+//     },
+//     onError: (err) => {
+//       console.log("error useOrder: ", err?.response?.data);
+//       const errorMessage = err?.response?.data?.message || "Place order failed";
+//       toast.error(errorMessage);
+//     }
+//   });
+
+//   const { isLoading: openLoading, data: openOrders } = useQuery({
+//     queryKey: ["orders", "open", pairId, page, size],
+//     queryFn: () => getOpenOrdersByPairId(pairId, page, size),
+//     retry: 1,
+//     enabled: !!user && !!pairId,
+//     placeholderData: [],
+//     initialData: [],
+//   });
+
+//   const { isLoading: historyLoading, data: orderHistory } = useQuery({
+//     queryKey: ["orders", "history", pairId, page, size],
+//     queryFn: () => getOrderHistoryByPairId(pairId, page, size),
+//     retry: 1,
+//     enabled: !!user && !!pairId,
+//     placeholderData: [],
+//     initialData: [],
+//   });
+
+//   return {
+//     isLoading, placeNewOrder,
+//     historyLoading,
+//     orderHistory: orderHistory?.content || [],
+//     historyPagination: {
+//       page: orderHistory?.page,
+//       size: orderHistory?.size,
+//       hasNext: orderHistory?.hasNext,
+//     },
+//     openLoading,
+//     openOrders: openOrders?.content || [],
+//     openPagination: {
+//       page: openOrders?.page,
+//       size: openOrders?.size,
+//       hasNext: openOrders?.hasNext,
+//     },
+//   };
+// }
+
+// export default useOrder;
+
+
+
+// import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+// import toast from "react-hot-toast";
+// import { getOpenOrdersByPairId, getOrderHistoryByPairId, getOrdersByPairId, placeOrder } from "../services/orderService";
+// import useUser from "./useUser";
+
+// function useOrder(pairId, openPage = 0, historyPage = 0, size = 7) {
+//   const queryClient = useQueryClient();
+//   const { user } = useUser();
+
+//   const { isLoading, mutate: placeNewOrder } = useMutation({
+//     mutationFn: (order) =>
+//       placeOrder(order),
+
+//     onSuccess: (newOrder) => {
+//       toast.success("Place order successful");
+
+//       queryClient.setQueryData(["orders", "open", pairId], (oldData) => {
+
+//         if (!oldData) return [newOrder];
+
+//         return [newOrder, ...oldData];
+//       });
+//     },
+//     onError: (err) => {
+//       console.log("error useOrder: ", err?.response?.data);
+//       const errorMessage = err?.response?.data?.message || "Place order failed";
+//       toast.error(errorMessage);
+//     }
+//   });
+
+//   const { isLoading: openLoading, data: openOrders } = useQuery({
+//     queryKey: ["orders", "open", pairId, openPage, size],
+//     queryFn: () => getOpenOrdersByPairId(pairId, openPage, size),
+//     enabled: !!user && !!pairId,
+//     retry: 1,
+//     placeholderData: { content: [], page: openPage, size, hasNext: false },
+//     initialData: { content: [], page: openPage, size, hasNext: false },
+//   });
+
+//   const { isLoading: historyLoading, data: orderHistory } = useQuery({
+//     queryKey: ["orders", "history", pairId, historyPage, size],
+//     queryFn: () => getOrderHistoryByPairId(pairId, historyPage, size),
+//     enabled: !!user && !!pairId,
+//     retry: 1,
+//     placeholderData: { content: [], page: historyPage, size, hasNext: false },
+//     initialData: { content: [], page: historyPage, size, hasNext: false },
+//   });
+
+//   return {
+//     isLoading, placeNewOrder,
+//     openOrders: openOrders?.content || [],
+//     openPagination: {
+//       page: openOrders?.page,
+//       size: openOrders?.size,
+//       hasNext: openOrders?.hasNext,
+//     },
+//     openLoading,
+//     orderHistory: orderHistory?.content || [],
+//     historyPagination: {
+//       page: orderHistory?.page,
+//       size: orderHistory?.size,
+//       hasNext: orderHistory?.hasNext,
+//     },
+//     historyLoading,
+//   };
+// }
+
+
+// export default useOrder;
+
+
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
-import { getOpenOrdersByPairId, getOrderHistoryByPairId, getOrdersByPairId, placeOrder } from "../services/orderService";
+import { getOpenOrdersByPairId, getOrderHistoryByPairId, placeOrder } from "../services/orderService";
 import useUser from "./useUser";
 
-function useOrder(pairId) {
+function useOrder(pairId, openPage = 0, historyPage = 0, size = 7) {
   const queryClient = useQueryClient();
-  const {user} = useUser()
+  const { user } = useUser();
 
-  const { isLoading, mutate: placeNewOrder } = useMutation({
-    mutationFn: (order) =>
-      placeOrder(order),
+  const { mutate: placeNewOrder, isLoading } = useMutation({
+    mutationFn: placeOrder,
 
     onSuccess: (newOrder) => {
       toast.success("Place order successful");
+      
+      // Update only the first page cache optimistically
+      queryClient.setQueryData(["orders", "open", pairId, 0, size], (old) => {
+        if (!old) return { content: [newOrder], page: 0, size, hasNext: false };
 
-      queryClient.setQueryData(["orders", "open", pairId], (oldData) => {
+        return {
+          ...old,
+          content: [newOrder, ...old.content].slice(0, size),
+        };
+      });
 
-        if (!oldData) return [newOrder];
-
-        return [newOrder, ...oldData];
+      // Invalidate other pages to ensure consistency
+      queryClient.invalidateQueries({
+        queryKey: ["orders", "open", pairId],
+        exact: false,
+        predicate: (query) => {
+          const [, , , page] = query.queryKey;
+          return page !== 0; // Don't invalidate page 0 since we just updated it
+        }
       });
     },
+
     onError: (err) => {
-      console.log("error useOrder: ", err?.response?.data);
-      const errorMessage = err?.response?.data?.message || "Place order failed";
-      toast.error(errorMessage);
-    }
+      toast.error(err?.response?.data?.message || "Place order failed");
+    },
   });
 
-  const { data: openOrders } = useQuery({
-    queryKey: ["orders", "open", pairId],
-    queryFn: () => getOpenOrdersByPairId(pairId),
-    retry: 1,
-    enabled: !!user && !!pairId ,
-    placeholderData: [],
-    initialData: [],
-  });
-
-  const { data: orderHistory } = useQuery({
-    queryKey: ["orders", "history", pairId],
-    queryFn: () => getOrderHistoryByPairId(pairId),
+  const { isLoading: openLoading, data: openOrdersData } = useQuery({
+    queryKey: ["orders", "open", pairId, openPage, size],
+    queryFn: () => getOpenOrdersByPairId(pairId, openPage, size),
     retry: 1,
     enabled: !!user && !!pairId,
-    placeholderData: [],
-    initialData: [],
+    // Remove initialData and placeholderData to prevent stale data issues
+    staleTime: 30000, // Consider data fresh for 30 seconds
+    refetchOnWindowFocus: false, // Prevent unnecessary refetches
   });
 
+  const { isLoading: historyLoading, data: historyData } = useQuery({
+    queryKey: ["orders", "history", pairId, historyPage, size],
+    queryFn: () => getOrderHistoryByPairId(pairId, historyPage, size),
+    retry: 1,
+    enabled: !!user && !!pairId,
+    staleTime: 30000,
+    refetchOnWindowFocus: false,
+  });
 
+  return {
+    isLoading,
+    placeNewOrder,
 
-    
+    historyLoading,
+    orderHistory: historyData?.content || [],
+    historyPagination: {
+      page: historyData?.page || historyPage,
+      size: historyData?.size || size,
+      hasNext: historyData?.hasNext || false,
+    },
 
-
-  // console.log("open: ", openOrders)
-  // console.log("history: ", orderHistory)
-
-  return { isLoading, placeNewOrder, openOrders, orderHistory };
+    openLoading,
+    openOrders: openOrdersData?.content || [],
+    openPagination: {
+      page: openOrdersData?.page || openPage,
+      size: openOrdersData?.size || size,
+      hasNext: openOrdersData?.hasNext || false,
+    },
+  };
 }
 
 export default useOrder;
