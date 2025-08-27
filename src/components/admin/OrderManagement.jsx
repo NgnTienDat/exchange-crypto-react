@@ -1,24 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import {
   Search,
   Filter
 } from 'lucide-react';
 import useOrders from '../../hooks/useOrders';
 
-
 export const OrderManagement = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [page, setPage] = useState(0);
   const size = 3;
   const { allOrdersLoading, orders, pagination } = useOrders(page, size);
-
-  // const orders = [
-  //   { id: 'ORD001', userId: 1, pair: 'BTC/USDT', side: 'buy', type: 'limit', price: 45000, amount: 0.5, status: 'filled', date: '2024-08-25' },
-  //   { id: 'ORD022', userId: 2, pair: 'ETH/USDT', side: 'sell', type: 'market', price: 2800, amount: 2.0, status: 'pending', date: '2024-08-25' },
-  //   { id: 'ORD023', userId: 1, pair: 'BTC/USDT', side: 'sell', type: 'limit', price: 46000, amount: 0.3, status: 'cancelled', date: '2024-08-24' }
-  // ];
-
-  console.log("orders: ", orders)
 
   const orderBook = [
     { price: 45100, amount: 1.2, side: 'sell' },
@@ -32,17 +23,25 @@ export const OrderManagement = () => {
   const handleCancelOrder = (orderId) => {
     console.log(`Cancel order ${orderId}`);
     // Implementation would go here
-
-
   };
 
+  // Memoize filtered orders to prevent unnecessary recalculations
+  const filteredOrders = useMemo(() => {
+    if (!searchTerm.trim()) return orders;
+    
+    return orders.filter((order) =>
+      order.id?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      order.userId?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      order.pairId?.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  }, [orders, searchTerm]);
 
-
-  const filteredOrders = orders.filter((order) =>
-    order.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    order.userId.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    order.pairId.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // Reset to first page when search term changes
+  React.useEffect(() => {
+    if (searchTerm.trim()) {
+      setPage(0);
+    }
+  }, [searchTerm]);
 
   const isOperationInProgress = allOrdersLoading;
 
@@ -70,83 +69,101 @@ export const OrderManagement = () => {
       </div>
 
       <div className="bg-white shadow rounded-lg overflow-hidden">
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
-            <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Order ID</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User ID</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Pair</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Side/Type</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price/Amount</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-            </tr>
-          </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
-            {filteredOrders.map((order) => (
-              <tr key={order.id} className="hover:bg-gray-50">
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                  {order.id}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  {order.userId}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                  {order.pairId}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-sm text-gray-900">
-                    <span className={`px-2 py-1 rounded text-xs ${order.side === 'BID' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
-                      }`}>
-                      {order.side === 'BID'?'buy':'sell'}
-                    </span>
-                    <span className="ml-2 text-gray-500">{order.type}</span>
-                  </div>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                  <div>${order.price.toLocaleString()}</div>
-                  <div className="text-gray-500">{order.quantity}</div>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full
-                  ${order.status.toLowerCase() === 'filled' ? 'bg-green-100 text-green-800' :
-                      order.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
-                        'bg-red-100 text-red-800'
-                    }`}>
-                    {order.status.toLowerCase()}
-                  </span>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                  {order.status === 'pending' && (
-                    <button
-                      onClick={() => handleCancelOrder(order.id)}
-                      className="text-red-600 hover:text-red-900"
-                    >
-                      Cancel
-                    </button>
-                  )}
-                </td>
+        {/* Loading overlay for better UX */}
+        <div className="relative">
+          {allOrdersLoading && (
+            <div className="absolute inset-0 bg-white bg-opacity-50 flex items-center justify-center z-10">
+              <div className="text-sm text-gray-600">Loading...</div>
+            </div>
+          )}
+          
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Order ID</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User ID</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Pair</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Side/Type</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price/Amount</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {filteredOrders.length > 0 ? (
+                filteredOrders.map((order) => (
+                  <tr key={order.id} className="hover:bg-gray-50">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                      {order.id}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      {order.userId}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                      {order.pairId}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="text-sm text-gray-900">
+                        <span className={`px-2 py-1 rounded text-xs ${order.side === 'BID' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                          }`}>
+                          {order.side === 'BID' ? 'buy' : 'sell'}
+                        </span>
+                        <span className="ml-2 text-gray-500">{order.type}</span>
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                      <div>${order.price?.toLocaleString()}</div>
+                      <div className="text-gray-500">{order.quantity}</div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full
+                      ${order.status?.toLowerCase() === 'filled' ? 'bg-green-100 text-green-800' :
+                          order.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
+                            'bg-red-100 text-red-800'
+                        }`}>
+                        {order.status?.toLowerCase()}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                      {order.status === 'pending' && (
+                        <button
+                          onClick={() => handleCancelOrder(order.id)}
+                          className="text-red-600 hover:text-red-900"
+                        >
+                          Cancel
+                        </button>
+                      )}
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="7" className="px-6 py-4 text-center text-sm text-gray-500">
+                    {searchTerm ? 'No orders found matching your search' : 'No orders available'}
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
+
       {/* Pagination controls */}
       <div className="flex space-x-5 justify-center items-center">
         <button
           disabled={page === 0 || isOperationInProgress}
           onClick={() => setPage((p) => p - 1)}
-          className="px-3 py-1 rounded disabled:opacity-50 text-gray-600 cursor-pointer hover:bg-gray-300"
+          className="px-3 py-1 rounded disabled:opacity-50 text-gray-600 cursor-pointer hover:bg-gray-300 disabled:hover:bg-transparent"
         >
           Previous
         </button>
         <span className="text-sm text-gray-600">
-          Page {pagination.page + 1} / {pagination.totalPages}
+          Page {(pagination?.page ?? 0) + 1} / {pagination?.totalPages ?? 1}
         </span>
         <button
-          disabled={page >= pagination.totalPages - 1 || isOperationInProgress}
+          disabled={page >= (pagination?.totalPages ?? 1) - 1 || isOperationInProgress}
           onClick={() => setPage((p) => p + 1)}
-          className="px-3 py-1 rounded disabled:opacity-50 text-gray-600 cursor-pointer hover:bg-gray-300"
+          className="px-3 py-1 rounded disabled:opacity-50 text-gray-600 cursor-pointer hover:bg-gray-300 disabled:hover:bg-transparent"
         >
           Next
         </button>
@@ -180,7 +197,6 @@ export const OrderManagement = () => {
           </div>
         </div>
       </div>
-
     </div>
   );
-}
+};

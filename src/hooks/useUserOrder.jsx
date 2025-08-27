@@ -9,6 +9,7 @@ function useUserOrder(userId, page = 0, size = 10) {
     retry: 1,
     enabled: !!getAccessToken(),
     keepPreviousData: true,
+    staleTime: 30000, 
   });
 
   return { isLoading, orders, isFetching };

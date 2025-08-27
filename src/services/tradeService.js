@@ -1,4 +1,4 @@
-import { API } from "../utils/axiosConfigs";
+import { API, AUTH_REQUEST } from "../utils/axiosConfigs";
 import { endpoints } from "../utils/helper";
 
 export async function openTrade(productId) {
@@ -21,4 +21,17 @@ export async function closeTrade(productId) {
 
 
   return data;
+}
+
+
+export async function getAllTradesAdmin(page = 0, size = 10) {
+  const res = await AUTH_REQUEST.get(endpoints.allTrades, {
+    params: { page, size },
+  });
+
+  if (res.status != 200) throw new Error("Error get trades");
+
+  const data = res.data;
+
+  return data?.result || null
 }

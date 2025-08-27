@@ -1,8 +1,9 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import toast from "react-hot-toast";
-import { closeTrade, openTrade } from "../services/tradeService";
+import { closeTrade, getAllTradesAdmin, openTrade } from "../services/tradeService";
+import { getAccessToken } from "../utils/helper";
 
-function useTrade() {
+function useTrade(page = 0, size = 10) {
     const { isLoading: isOpening, mutate: openTradeDetail } = useMutation({
         mutationFn: (productId) => openTrade(productId),
         onSuccess: (data) => {
@@ -22,7 +23,34 @@ function useTrade() {
             toast.error(err.response?.data?.message || "Close trade failed");
         },
     });
-    return { isOpening, isClosing, openTradeDetail, closeTradeDetail };
+
+
+
+
+    const { isLoading: tradeLoading, data, error } = useQuery({
+        queryKey: ["trades", page, size],
+        queryFn: () => getAllTradesAdmin(page, size),
+        retry: 1,
+        enabled: !!getAccessToken(),
+        keepPreviousData: true,
+        staleTime: 30000,
+    });
+
+
+    return {
+
+        isOpening, isClosing, openTradeDetail, closeTradeDetail,
+
+        tradeLoading,
+        trades: data?.content || [],
+        pagination: {
+            page: data?.page,
+            size: data?.size,
+            hasNext: data?.hasNext,
+        },
+        error,
+    };
+
 }
 
 export default useTrade;
