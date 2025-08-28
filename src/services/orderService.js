@@ -1,6 +1,9 @@
 import { AUTH_REQUEST } from "../utils/axiosConfigs";
 import { endpoints } from "../utils/helper";
 
+const currentDate = new Date();
+const currentMonth = currentDate.getMonth() + 1;
+const currentYear = currentDate.getFullYear();
 
 
 export async function placeOrder(order) {
@@ -94,11 +97,60 @@ export async function getUserOrders(userId, page = 0, size = 10) {
   return data?.result || null;
 }
 
+export async function getAdminOrderBook(pairId = "BTC-USDT", limit = 10, side) {
+  const res = await AUTH_REQUEST.get(endpoints.adminOrderBook, {
+    params: { pairId, limit, side },
+  });
+
+  if (res.status !== 200) throw new Error("Error get order book admin");
+
+  const data = res.data;
+
+  return data?.result?.orders || null;
+}
+
 
 export async function getUserOrderStats(userId) {
   const res = await AUTH_REQUEST.get(endpoints.orderStats(userId));
 
   if (res.status !== 200) throw new Error("Error stats");
+
+  const data = res.data;
+
+  return data?.result || null;
+}
+
+
+export async function getTotalOrdersToday() {
+  const res = await AUTH_REQUEST.get(endpoints.totalOrdersToDay);
+
+  if (res.status !== 200) throw new Error("Error get total order admin");
+
+  const data = res.data;
+
+  return data?.result || null;
+}
+
+
+export async function getTotalOrdersByMonth(month, year) {
+  const res = await AUTH_REQUEST.get(endpoints.totalOrdersMoth, {
+    params: { month, year },
+  });
+
+  if (res.status !== 200) throw new Error("Error get total order admin");
+
+  const data = res.data;
+
+  return data?.result || null;
+}
+
+
+export async function getTotalOrdersByYear(year) {
+  const res = await AUTH_REQUEST.get(endpoints.totalOrdersYear, {
+    params: { year },
+  });
+
+  if (res.status !== 200) throw new Error("Error get total order admin");
 
   const data = res.data;
 
