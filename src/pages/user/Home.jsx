@@ -1,9 +1,16 @@
 // src/pages/Home.jsx
-import React from "react";
+import React, { useEffect } from "react";
 import TickerTape from "../../components/user/TickerTape";
 import Footer from "../../layouts/user/Footer";
 
 const Home = () => {
+
+
+  useEffect(() => {
+    console.log("redirectUlr", window.location.href);
+  }, [])
+
+
   return (
     <div className="min-h-screen bg-white text-black">
       {/* Ticker bar */}

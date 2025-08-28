@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import useLogin from '../../hooks/useLogin';
 import { fingerprintToUUID, getDeviceId } from '../../utils/helper';
 import VerifyCodeModal from '../../components/user/VerifyCodeModal';
+import useGoogleLogin from '../../hooks/useGoogleLogin';
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -13,6 +14,7 @@ const Login = () => {
   const [deviceId, setDeviceIdState] = useState('');
   const [showVerifyModal, setShowVerifyModal] = useState(false);
   const [pendingUserId, setPendingUserId] = useState(null);
+  const { redirectGoogleLogin } = useGoogleLogin();
 
   const { isLoading, login } = useLogin({
     onRequire2FA: (userId) => {
@@ -132,7 +134,8 @@ const Login = () => {
           {/* Google Login */}
           <button
             type="button"
-            className="w-full bg-white hover:bg-gray-50 text-gray-700 py-3 px-4 rounded-lg transition-all duration-200 flex items-center justify-center space-x-2 border border-gray-300"
+            onClick={redirectGoogleLogin}
+            className="w-full cursor-pointer bg-white hover:bg-gray-50 text-gray-700 py-3 px-4 rounded-lg transition-all duration-200 flex items-center justify-center space-x-2 border border-gray-300"
           >
             <svg className="w-5 h-5" viewBox="0 0 24 24">
               <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />

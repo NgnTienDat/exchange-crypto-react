@@ -22,7 +22,6 @@ function useLogin({ onRequire2FA }) {
 
       setCookieToken(user.token);
       setDeviceId(variables.deviceId);
-      // queryClient.invalidateQueries(["user"]);
       queryClient.setQueryData(["user"], user);
 
       console.log("roles", user.roles)
