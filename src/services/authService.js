@@ -2,6 +2,11 @@ import { API, AUTH_REQUEST } from "../utils/axiosConfigs";
 import { endpoints, getAccessToken, getDeviceId } from "../utils/helper";
 
 
+export async function loginOauth(code) {
+  const res = await API.post(`${endpoints.getTokenOutBound}?code=${code}`)
+  return res.data?.result || null
+}
+
 
 export async function enable2fa() {
   const res = await AUTH_REQUEST.post(endpoints.enable2fa);

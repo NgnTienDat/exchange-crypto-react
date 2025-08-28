@@ -28,6 +28,7 @@ import CreatePassword from './pages/auth/CreatePassword'
 import AdminUI from './pages/admin/AdminUI'
 import Forbidden from './pages/Forbidden'
 import AdminRoute from './pages/admin/AdminRoute'
+import CallBackOAuth from './pages/auth/CallBackOAuth'
 
 function App() {
 
@@ -43,6 +44,7 @@ function App() {
 
             <Route path="/auth" element={<Authentication />}>
               <Route path="login" element={<Login />} />
+              <Route path="login/callback" element={<CallBackOAuth />} />
               <Route path="signup" element={<SignUp />} />
               <Route path="verify" element={<VerifyEmail />} />
               <Route path="password" element={<CreatePassword />} />

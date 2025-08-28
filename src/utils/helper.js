@@ -2,6 +2,7 @@ import Cookies from "universal-cookie";
 
 export const endpoints = {
   login: '/auth/login',
+  getTokenOutBound: '/auth/outbound/authentication',
   logout: '/auth/logout',
   sendOtp: '/auth/send-otp',
   verifyOtp: '/auth/verify-otp',
