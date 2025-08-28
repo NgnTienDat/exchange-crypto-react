@@ -79,6 +79,8 @@ export async function getAllUsers(page = 0, size = 10) {
 }
 
 
+
+
 export async function deleteUser(userId) {
   const res = await AUTH_REQUEST.delete(endpoints.user(userId));
   // console.log("Current: ", res.data)
@@ -105,12 +107,12 @@ export async function lockUser(updateData) {
   return data?.result || null
 }
 
-// export async function unlockUser(userId) {
-//   const res = await AUTH_REQUEST.patch(endpoints.userUnlocked(userId));
 
-//   if (res.status != 200) throw new Error("Error unlock user");
+export async function countTotalUsers() {
+  const res = await AUTH_REQUEST.get(endpoints.totalUsers);
 
-//   const data = res.data;
+  if (res.status !== 200) throw new Error("Error count users");
 
-//   return data?.result || null
-// }
+  const data = res.data;
+  return data?.result || null; 
+}

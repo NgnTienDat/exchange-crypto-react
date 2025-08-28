@@ -35,7 +35,7 @@ const MyOrder = ({ pair }) => {
   const isOperationInProgress = historyLoading || openLoading;
 
   return (
-    <div className="bg-white rounded-md border shadow-sm h-[51vh]">
+    <div className="bg-white rounded-md border shadow-sm h-[60vh]">
       {/* Tabs */}
       <div className="flex items-center justify-between rounded-md border-b px-4 py-2 bg-gray-50">
         <div className="flex space-x-1">
