@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Eye, EyeOff, QrCode } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import useLogin from '../../hooks/useLogin';
-import { fingerprintToUUID, getDeviceId } from '../../utils/helper';
+import { fingerprintToUUID, getDeviceId, setDeviceId } from '../../utils/helper';
 import VerifyCodeModal from '../../components/user/VerifyCodeModal';
 import useGoogleLogin from '../../hooks/useGoogleLogin';
 
@@ -24,22 +24,58 @@ const Login = () => {
   });
 
 
-  useEffect(() => {
-    const existingDeviceId = getDeviceId();
+  // useEffect(() => {
+  //   const existingDeviceId = getDeviceId(email);
+
+  //   if (existingDeviceId) {
+  //     setDeviceIdState(existingDeviceId);
+  //     console.log("Existing Device UUID:", existingDeviceId);
+  //   } else {
+  //     fingerprintToUUID(email).then(uuid => {
+  //       setDeviceIdState(uuid);
+  //       console.log("Device UUID:", uuid);
+  //     });
+  //   }
+  // }, []);
+
+  const handleSubmit = async () => {
+    let uuid = getDeviceId(email);
+
+    if (!uuid) {
+      uuid = await fingerprintToUUID(email);
+      setDeviceId(email, uuid); // lưu cookie
+    }
+
+    setDeviceIdState(uuid); // cập nhật state, optional
+
+    const loginData = {
+      email,
+      password,
+      deviceId: uuid, // sử dụng giá trị đã sẵn sàng
+      userAgent: navigator.userAgent
+    };
+
+    login(loginData);
+  };
+
+
+
+  const handleSubmitZ = () => {
+
+    const existingDeviceId = getDeviceId(email);
 
     if (existingDeviceId) {
       setDeviceIdState(existingDeviceId);
       console.log("Existing Device UUID:", existingDeviceId);
     } else {
-      fingerprintToUUID().then(uuid => {
+      fingerprintToUUID(email).then(uuid => {
         setDeviceIdState(uuid);
+        setDeviceId(email, uuid);
         console.log("Device UUID:", uuid);
       });
     }
-  }, []);
 
 
-  const handleSubmit = () => {
     const loginData = {
       email,
       password,

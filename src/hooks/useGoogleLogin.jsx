@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { OAuthConfig } from "../configurations/configurations";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { loginOauth } from "../services/authService";
+import { setCookieToken } from "../utils/helper";
 
 function useGoogleLogin() {
     const navigate = useNavigate();
@@ -11,8 +12,8 @@ function useGoogleLogin() {
         onSuccess: (user) => {
 
             console.log("token oauth: ", user)
+            setCookieToken(user.token);
 
-            // queryClient.setQueryData(["user"], user);
             navigate("/");
         },
         onError: (err) => {

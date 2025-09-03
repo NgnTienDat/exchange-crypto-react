@@ -28,7 +28,7 @@ const QRCodeModal = ({ onClose, onNext, secretImageUri }) => {
 
         <button
           onClick={onNext}
-          className="w-full mt-10 bg-yellow-500 text-black py-2 rounded-lg font-semibold hover:bg-yellow-600"
+          className="w-full mt-10 bg-yellow-500 text-black py-2 rounded-lg font-semibold hover:bg-yellow-600 cursor-pointer"
         >
           Next
         </button>

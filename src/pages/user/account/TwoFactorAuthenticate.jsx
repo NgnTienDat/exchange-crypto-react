@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import QRCodeModal from '../../../components/user/QRCodeModal';
 import useTfa from '../../../hooks/useTfa';
 import VerifyCodeModal from '../../../components/user/VerifyCodeModal';
+import useUser from '../../../hooks/useUser';
+import { getDeviceId } from '../../../utils/helper';
 
 const TwoFactorAuthenticate = () => {
 
@@ -11,6 +13,14 @@ const TwoFactorAuthenticate = () => {
     const [qrData, setQrData] = useState("");
     const { enableTfa } = useTfa();
     const navigate = useNavigate()
+    const {user, isLoading} = useUser();
+
+    const [pendingUserId, setPendingUserId] = useState(user?.id || null);
+    const deviceId = getDeviceId(user?.email || "");
+
+
+    
+
 
     const handleBack = () => {
         navigate("/my/security")
@@ -70,12 +80,12 @@ const TwoFactorAuthenticate = () => {
                     <button
                         onClick={handleEnableAuth}
                         className="w-[80%] bg-amber-300 text-black font-semibold py-3 px-6 rounded-lg
-                         hover:bg-amber-400 transition-colors mb-4"
+                         hover:bg-amber-400 transition-colors mb-4 cursor-pointer"
                     >
                         Enable Authenticator App
                     </button>
 
-                    <button className="text-yellow-500 hover:text-yellow-400 transition-colors">
+                    <button className="text-yellow-500 hover:text-yellow-400 transition-colors cursor-pointer">
                         Download Authenticator App
                     </button>
                 </div>
@@ -84,10 +94,13 @@ const TwoFactorAuthenticate = () => {
                 <QRCodeModal
                     secretImageUri={qrData?.secretImageUri}
                     onClose={handleCloseModal}
-                    onNext={handleQrNext}/>
+                    onNext={handleQrNext} />
             )}
             {step === "verify" && (
-                <VerifyCodeModal onClose={handleCloseModal}/>
+                <VerifyCodeModal onClose={handleCloseModal}
+                    userId={pendingUserId}
+                    deviceId={deviceId}
+                />
             )}
         </div>
     );

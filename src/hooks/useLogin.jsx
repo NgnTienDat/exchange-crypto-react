@@ -14,15 +14,13 @@ function useLogin({ onRequire2FA }) {
     onSuccess: (user, variables) => {
 
       if (user.condition === "2FA_REQUIRED") {
-        // gọi callback để mở VerifyCodeModal
         console.log("condition: ", user.condition)
-        if (onRequire2FA) onRequire2FA(user.userId); // user.message = userId
+        if (onRequire2FA) onRequire2FA(user.userId)
         return;
       }
 
       setCookieToken(user.token);
       setDeviceId(variables.deviceId);
-      queryClient.setQueryData(["user"], user);
 
       console.log("roles", user.roles)
       if (user.roles?.includes("ADMIN")) {
