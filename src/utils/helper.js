@@ -69,7 +69,7 @@ const AUTH_TOKEN_KEY = 'auth_token';
 const DEVICE_ID = 'device_id';
 
 export const setCookieToken = (token) => {
-  console.log("setToken", token)
+  // console.log("setToken", token)
   cookies.set(AUTH_TOKEN_KEY, token, {
     path: '/',
     maxAge: 36000,
@@ -78,8 +78,28 @@ export const setCookieToken = (token) => {
   });
 };
 
-export const setDeviceId = (uuid) => {
-  cookies.set(DEVICE_ID, uuid, {
+// export const setDeviceId = (uuid) => {
+//   cookies.set(DEVICE_ID, uuid, {
+//     path: '/',
+//     maxAge: 36000,
+//     secure: true,
+//     sameSite: 'Strict',
+//   });
+// };
+
+export const getAccessToken = () => {
+  return cookies.get(AUTH_TOKEN_KEY) || null;
+};
+
+// export const getDeviceId = () => {
+//   return cookies.get(DEVICE_ID) || null;
+// };
+
+const getCookieKey = (email) => `deviceId-${email}`;
+
+// Lưu deviceId
+export const setDeviceId = (email, uuid) => {
+  cookies.set(getCookieKey(email), uuid, {
     path: '/',
     maxAge: 36000,
     secure: true,
@@ -87,13 +107,12 @@ export const setDeviceId = (uuid) => {
   });
 };
 
-export const getAccessToken = () => {
-  return cookies.get(AUTH_TOKEN_KEY) || null;
+
+export const getDeviceId = (email) => {
+  return cookies.get(getCookieKey(email)) || null;
 };
 
-export const getDeviceId = () => {
-  return cookies.get(DEVICE_ID) || null;
-};
+
 
 
 export const AuthenticationHeader = () => {
@@ -136,14 +155,10 @@ function getFingerprint() {
 }
 
 // Hash SHA-256 và convert sang UUID
-export async function fingerprintToUUID() {
-  const data = new TextEncoder().encode(getFingerprint());
+export async function fingerprintToUUID(email) {
+  const data = new TextEncoder().encode(getFingerprint() + '###' + email);
   const hashBuffer = await crypto.subtle.digest("SHA-256", data);
   const hashArray = Array.from(new Uint8Array(hashBuffer));
-
-  // Lấy 16 byte đầu tiên để tạo UUID v4 format
   const hex = hashArray.slice(0, 16).map(b => b.toString(16).padStart(2, "0")).join("");
   return hex.replace(/^(.{8})(.{4})(.{4})(.{4})(.{12}).*$/, "$1-$2-$3-$4-$5");
 }
-
-

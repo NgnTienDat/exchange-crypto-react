@@ -6,9 +6,9 @@ import Footer from "../../layouts/user/Footer";
 const Home = () => {
 
 
-  useEffect(() => {
-    console.log("redirectUlr", window.location.href);
-  }, [])
+  // useEffect(() => {
+  //   console.log("redirectUlr", window.location.href);
+  // }, [])
 
 
   return (
@@ -47,7 +47,7 @@ const Home = () => {
               <button className="p-2 border rounded-lg">
                 <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" className="w-6 h-6" />
               </button>
-             
+
             </div>
           </div>
         </div>

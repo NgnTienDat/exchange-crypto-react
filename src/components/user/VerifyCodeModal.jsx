@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { ArrowLeft, X } from 'lucide-react';
 import useVerify from '../../hooks/useVerify';
 import { getDeviceId } from '../../utils/helper';
+import { Spinner } from '../Spinner';
 
 const VerifyCodeModal = ({ onClose, userId, deviceId }) => {
 
@@ -11,7 +12,7 @@ const VerifyCodeModal = ({ onClose, userId, deviceId }) => {
 
     const { isLoading, verify } = useVerify();
     console.log("deviceid: ", deviceId)
-    
+
 
 
     const handleSubmit = () => {
@@ -55,14 +56,16 @@ const VerifyCodeModal = ({ onClose, userId, deviceId }) => {
                 </div>
 
                 <button
-                    disabled={code.length !== 6}
+                    disabled={code.length !== 6 || isLoading}
                     onClick={handleSubmit}
                     className="w-full bg-amber-300 hover:bg-yellow-400 disabled:bg-yellow-800
-           disabled:opacity-50 text-black py-3 rounded-lg font-medium cursor-pointer 
-           disabled:cursor-not-allowed transition-colors"
+                        disabled:opacity-50 text-black py-3 rounded-lg font-medium cursor-pointer 
+                        disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
                 >
-                    Submit
+                    {isLoading ? <Spinner size={20} /> : "Submit"}
                 </button>
+
+
             </div>
         </div>
     );

@@ -9,7 +9,7 @@ export default function Navbar() {
   const { logout } = useLogout();
   const navigate = useNavigate();
 
-  console.log("user: ", user)
+  // console.log("user: ", user)
 
   const handleLogout = () => {
     logout();
@@ -47,7 +47,11 @@ export default function Navbar() {
         ) : user ? (
           <div className="relative group h-10 flex items-center">
             <div className="cursor-pointer h-10 w-10 flex justify-center items-center ">
+              {user?.avatar ? 
+              <img className="rounded-full h-8 w-8" src={user.avatar}></img>
+              :
               <FaUserCircle className="text-2xl" />
+              }
             </div>
             <div className="absolute right-0 top-full w-48 font-normal bg-gray-700 text-white rounded shadow-lg z-10 hidden group-hover:flex flex-col">
               <Link to="/my/dashboard" className="px-4 py-2 hover:bg-gray-600">Dashboard</Link>
